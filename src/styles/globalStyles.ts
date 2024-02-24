@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { styled, createGlobalStyle } from 'styled-components'
 
 const globalStyles = createGlobalStyle`
     * {
@@ -6,10 +6,21 @@ const globalStyles = createGlobalStyle`
         padding: 0;
         box-sizing: border-box;
     }
-
-    body {
-        background-color: #F1F1F1
+    
+    body, #root {
+        width: 100vw;
+        height: 100vh;
+        background-color: ${({ theme }) => theme.colors.background};
+        color: ${({ theme }) => theme.colors.textColor};
     }
 `
-
 export default globalStyles;
+
+export const Page = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;    
+    padding: 10px;    
+`

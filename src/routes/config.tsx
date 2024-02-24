@@ -1,4 +1,3 @@
-import App from "../App";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 
@@ -8,14 +7,8 @@ export const config: RouterType[] = [
     element: <Login />,
   },
   {
-    path: "*",
-    element: <App />,
+    path: "/home",
     isPrivate: true,
-    children: [
-      {
-        path: "/home",
-        element: <Home />,
-      },
-    ],
+    element: <Home />,
   },
 ];

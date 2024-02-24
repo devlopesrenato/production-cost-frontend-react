@@ -1,17 +1,17 @@
-import { useAppDispatch } from "../../redux/hooks";
-import { setUser } from "../../redux/user/actions";
+import { useAppSelector } from "../../redux/hooks";
+import { Container, Logo, Global, Title } from "./styled";
+import SwitchTheme from "../../components/SwitchTheme";
 
 const Login = () => {
-  const dispatch = useAppDispatch();
+  const { theme } = useAppSelector((state) => state.themeReducer);
   return (
-    <>
-      <p>Login</p>
-      <button
-        onClick={() => dispatch(setUser({ name: "devLopesRenato", id: "1" }))}
-      >
-        signin
-      </button>
-    </>
+    <Global.Page>
+      <Container>
+        <Logo src={`/logo-${theme}.png`} alt="Logotipo Production Cost" />
+        <Title>Login</Title>
+        <SwitchTheme />
+      </Container>
+    </Global.Page>
   );
 };
 
