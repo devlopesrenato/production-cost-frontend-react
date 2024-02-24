@@ -1,7 +1,7 @@
 import ThemeActionTypes from "./actions-types";
 
 const initialState = {
-    theme: 'light' as Theme
+    theme: localStorage.getItem('@theme') || 'light' as Theme
 }
 
 interface ThemeAction {
@@ -11,7 +11,9 @@ interface ThemeAction {
 const themeReducer = (state = initialState, action: ThemeAction) => {
     switch (action.type) {
         case ThemeActionTypes.CHANGE_THEME: {
-            return { theme: state.theme === 'dark' ? 'light' : 'dark' }
+            const newTheme = state.theme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('@theme', newTheme);
+            return { theme: newTheme }
         }
         default: {
             return state;

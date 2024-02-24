@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 import * as Global from '../../styles/globalStyles'
 
+const Header = styled.div`
+    display: flex;  
+    flex-direction: row-reverse;  
+    width: 100%;
+`
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -18,11 +23,20 @@ const Title = styled.h1`
     font-size: 25px;
     margin: 0;
     padding: 0;
-    color: ${({ theme }) => theme.colors.textColor};  
+`
+
+const Form = styled.div`
+    display: flex;
+    flex-direction: column;  
+    width: 90%;
+    max-width: 300px;  
+    border-radius: 25px;
 `
 export {
     Global,
     Container,
     Logo,
-    Title
+    Title,
+    Form,
+    Header
 }

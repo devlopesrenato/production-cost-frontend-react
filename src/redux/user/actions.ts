@@ -1,9 +1,9 @@
 import UserActionTypes from "./actions-types";
 
-export function setUser(values: { id: string, name: string }) {
-    const { id, name } = values;
+export function setUser(values: { id?: string, name?: string, token?: string }) {
+    const { id, name, token } = values;
     return {
         type: UserActionTypes.SET_USER,
-        payload: { id, name },
+        payload: { id, name, token },
     };
 }
