@@ -7,7 +7,7 @@ export const config: RouterType[] = [
     element: <Login />,
   },
   {
-    path: "/",
+    path: "*",
     isPrivate: true,
     element: <Home />,
   },
