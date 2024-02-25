@@ -27,9 +27,9 @@ export default globalStyles;
 
 export const Page = styled.div`
     width: 100%;
+    padding: 60px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;    
-    padding: 10px;    
+    overflow: hidden;
 `

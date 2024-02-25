@@ -4,7 +4,7 @@ import Routes from "./routes";
 import { useAppSelector } from "./redux/hooks";
 import themes from "./styles/themes";
 import { BrowserRouter } from "react-router-dom";
-import { Menu } from "./components/SwitchTheme/Menu";
+import { Menu } from "./components/Menu";
 
 const App = () => {
   const { theme } = useAppSelector((state) => state.themeReducer);

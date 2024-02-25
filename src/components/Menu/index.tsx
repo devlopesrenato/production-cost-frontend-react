@@ -5,17 +5,17 @@ import { Button, Menu as MenuAnt, MenuProps as MenuAntProps } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 
 import pageName, { pageNames } from "./settings/pageName";
-import { menuItems } from "./settings/menuItems";
-import { useAppDispatch } from "../../../redux/hooks";
-import { setUser } from "../../../redux/user/actions";
+import menuItems from "./settings/menuItems";
+import { useAppDispatch } from "../../redux/hooks";
+import { setUser } from "../../redux/user/actions";
 import { MenuBackground, NavBar, NavBarMenu } from "./styled";
 import { Title } from "./styled";
-import SwitchTheme from "..";
+import SwitchTheme from "../SwitchTheme";
 
 export const Menu = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [current, setCurrent] = useState(["home"]);
-  const [title, setTitle] = useState("home");
+  const [title, setTitle] = useState("Home");
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();

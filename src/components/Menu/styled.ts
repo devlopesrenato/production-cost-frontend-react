@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import * as Global from '../../../styles/globalStyles'
+import * as Global from '../../styles/globalStyles'
 
 const NavBar = styled.div`
     width: 100%;
