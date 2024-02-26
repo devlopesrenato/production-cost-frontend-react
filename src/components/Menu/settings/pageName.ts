@@ -2,6 +2,7 @@ export const pageNames = {
     "": "Home",
     "home": "Home",
     "registers": "Registers",
+    "registers/categories": "Categories",
 }
 
 export const systemPageNames = {

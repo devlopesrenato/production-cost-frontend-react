@@ -2,6 +2,8 @@ import { HiPresentationChartBar } from "react-icons/hi";
 import { CiLogout } from "react-icons/ci";
 import pageName, { getSystemPageNames } from "./pageName";
 import systemInfo from "../../../../package.json";
+import { VscGitPullRequestNewChanges } from "react-icons/vsc";
+import Categories from "../../../pages/registers/Categories";
 import Home from "../../../pages/Home";
 
 interface MenuItemRoute {
@@ -27,6 +29,18 @@ const menuItems: MenuItemRoute[] = [
     icon: <HiPresentationChartBar />,
     element: <Home />,
     default: true,
+  },
+  {
+    key: "registers",
+    label: pageName("registers"),
+    icon: <VscGitPullRequestNewChanges />,
+    children: [
+      {
+        key: "registers/categories",
+        label: pageName("registers/categories"),
+        element: <Categories />,
+      },
+    ],
   },
   {
     key: "logout",
