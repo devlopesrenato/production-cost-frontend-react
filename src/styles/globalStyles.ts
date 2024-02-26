@@ -23,6 +23,7 @@ const globalStyles = createGlobalStyle`
         background-color: ${({ theme }) => theme.colors.backgroundGray};
     }
 `
+
 export default globalStyles;
 
 export const Page = styled.div`
@@ -32,4 +33,14 @@ export const Page = styled.div`
     flex-direction: column;
     align-items: center;
     overflow: hidden;
+`
+
+export const Message = styled.span`
+    color: #FFF;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+`
+
+export const Description = styled.p`
+    color: #FFF;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
 `
