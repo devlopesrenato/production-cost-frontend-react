@@ -6,11 +6,10 @@ import {
   STable,
   STCell,
   STHeadRow,
-  Refresh,
   STCellContent,
 } from "./styled";
-import { LuRefreshCw } from "react-icons/lu";
 import ArrowSort from "./components/arrowSort";
+import { Loading } from "../Loading";
 
 interface TableProps {
   columns: ColumnsType[];
@@ -72,13 +71,9 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
           ))}
         </STHeadRow>
       </STHead>
-      <STBody>
-        {loading ? (
-          <Refresh>
-            <LuRefreshCw />
-          </Refresh>
-        ) : (
-          processedData.map((data) => (
+      <Loading loading={loading}>
+        <STBody>
+          {processedData.map((data) => (
             <STRow>
               {columns.map((column) => {
                 const fnRender = column.render;
@@ -96,9 +91,9 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
                 );
               })}
             </STRow>
-          ))
-        )}
-      </STBody>
+          ))}
+        </STBody>
+      </Loading>
     </STable>
   );
 };

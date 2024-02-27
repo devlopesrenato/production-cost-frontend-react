@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 const STable = styled.table`
     table-layout: auto;
@@ -28,7 +28,7 @@ const STRow = styled.tr`
 
 const STHeadRow = styled.tr`
     display: flex;
-    background-color: ${({ theme }) => theme.colors.backgroundHoverHeadTable};
+    background-color: ${({ theme }) => theme.colors.backgroundHeadTable};
 `
 
 const STCell = styled.tr`
@@ -44,28 +44,6 @@ const STCellContent = styled.div`
     display: flex;
 `
 
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const Refresh = styled.div`
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding: 50px;
-    background-color: ${({ theme }) => theme.colors.backgroundRowTable};
-    svg {
-        font-size: 35px;
-        color: ${({ theme }) => theme.colors.textColor};
-        animation: ${rotate} 0.9s linear infinite;
-    }
-`
-
 export {
     STable,
     STHead,
@@ -74,5 +52,4 @@ export {
     STCell,
     STCellContent,
     STHeadRow,
-    Refresh
 }
