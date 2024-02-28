@@ -24,7 +24,7 @@ export const Loading: React.FC<LoadingProps> = ({
   }, [children, loading]);
 
   return (
-    <Background style={{ backgroundColor: backColor }} ref={ref}>
+    <Background style={{ backgroundColor: backColor }} ref={ref}  loading={loading}>
       {children}
       {loading && (
         <Overlay
@@ -32,7 +32,7 @@ export const Loading: React.FC<LoadingProps> = ({
           width={overlaySize.width}
           height={overlaySize.height}
         >
-          <LuRefreshCw />
+          <LuRefreshCw id="svg-load"/>
         </Overlay>
       )}
     </Background>
