@@ -7,6 +7,7 @@ import {
   STCell,
   STHeadRow,
   STCellContent,
+  STHeaderCell,
 } from "./styled";
 import ArrowSort from "./components/arrowSort";
 import { Loading } from "../Loading";
@@ -46,12 +47,43 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
     setProcessedData(processData());
   }, [dataSource, ordination]);
 
+  function cellStyles(colStyle: ColumnsType, index: number) {
+    const width = colStyle.width || 100;
+
+    const isLast = index === columns.length - 1;
+    const after = columns[index + 1];
+    const fixedEnd = isLast ? 0 : after?.fixed ? Number(width) : undefined;
+
+    const isFirst = index === 0;
+    const before = columns[index - 1];
+    const fixedStart = isFirst ? 0 : before?.fixed ? Number(width) : undefined;
+    return {
+      width,
+      justifyContent: colStyle.align,
+      display: "flex",
+      position: colStyle.fixed ? "sticky" : undefined,
+      right: colStyle.fixed === "right" ? fixedEnd : undefined,
+      left: colStyle.fixed === "left" ? fixedStart : undefined,
+    } as React.CSSProperties;
+  }
+
   return (
     <STable>
-      <STHead>
-        <STHeadRow style={{ borderRadius: "10px 10px 0 0" }}>
-          {columns.map((column) => (
-            <STCell key={column.key} style={{ width: column.width || 100 }}>
+      <Loading loading={loading}>
+      <STHead
+        style={{
+          width: columns.reduce(
+            (acc, act) => (acc += Number(act.width) || 100),
+            0
+          ),
+        }}
+      >
+        <STHeadRow>
+          {columns.map((column, index) => (
+            <STHeaderCell
+              key={column.key}
+              style={{ ...cellStyles(column, index), minHeight: 41 }}
+            >
               <STCellContent style={{ justifyContent: column.align }}>
                 <strong>{column.title}</strong>
               </STCellContent>
@@ -67,32 +99,33 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
               ) : (
                 <></>
               )}
-            </STCell>
+            </STHeaderCell>
           ))}
         </STHeadRow>
       </STHead>
-      <Loading loading={loading}>
-        <STBody>
-          {processedData.map((data) => (
-            <STRow>
-              {columns.map((column) => {
-                const fnRender = column.render;
-                return (
-                  <STCell
-                    style={{
-                      width: column.width || 100,
-                      justifyContent: column.align,
-                    }}
-                  >
-                    {fnRender
-                      ? fnRender(data, data[column.dataIndex])
-                      : data[column.dataIndex]}
-                  </STCell>
-                );
-              })}
-            </STRow>
-          ))}
-        </STBody>
+      <STBody
+        style={{
+          width: columns.reduce(
+            (acc, act) => (acc += Number(act.width) || 100),
+            0
+          ),
+        }}
+      >
+        {processedData.map((data) => (
+          <STRow>
+            {columns.map((column, index) => {
+              const fnRender = column.render;
+              return (
+                <STCell style={cellStyles(column, index)}>
+                  {fnRender
+                    ? fnRender(data, data[column.dataIndex])
+                    : data[column.dataIndex]}
+                </STCell>
+              );
+            })}
+          </STRow>
+        ))}
+      </STBody>
       </Loading>
     </STable>
   );
