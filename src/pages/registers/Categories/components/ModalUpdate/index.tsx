@@ -59,6 +59,7 @@ export const ModalUpdate: React.FC<ModalProps> = ({
         onOk={handleOk}
         onCancel={close}
         confirmLoading={confirmLoading}
+        destroyOnClose
       >
         <Form
           name="Edit"
