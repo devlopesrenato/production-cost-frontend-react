@@ -7,49 +7,57 @@ import { Page } from "../styles/globalStyles";
 
 const MainRoutes = () => {
   const [routes, setRoutes] = useState<RouterType[]>([]);
+  const [loading, setLoading] = useState(true);
   const { currentUser } = useAppSelector((state) => state.userReducer);
 
   useEffect(() => {
-    if (!currentUser) {
-      setRoutes(config.filter((route) => !route.isPrivate));
-    } else {
-      const privateRoutes: RouterType[] = [];
-      let defaultPage: RouterType = {
-        path: "/",
-        element: <></>,
-        isPrivate: true,
-      };
+    setLoading(true);
+    try {
+      if (!currentUser) {
+        setRoutes(config.filter((route) => !route.isPrivate));
+      } else {
+        const privateRoutes: RouterType[] = [];
+        let defaultPage: RouterType = {
+          path: "/",
+          element: <></>,
+          isPrivate: true,
+        };
 
-      const processRoute = (route: (typeof menuItems)[number]) => {
-        if (route.element) {
-          privateRoutes.push({
-            path: route.key,
-            element: route.element,
-            isPrivate: true,
-          });
-          if (route.default) {
-            defaultPage.element = route.element;
-          }
-        }
-        if (route.children?.length) {
-          route.children.forEach((childRoute) => {
-            if (childRoute.element) {
-              privateRoutes.push({
-                path: childRoute.key,
-                element: childRoute.element,
-                isPrivate: true,
-              });
-              if (childRoute.default) {
-                defaultPage.element = childRoute.element;
-              }
+        const processRoute = (route: (typeof menuItems)[number]) => {
+          if (route.element) {
+            privateRoutes.push({
+              path: route.key,
+              element: route.element,
+              isPrivate: true,
+            });
+            if (route.default) {
+              defaultPage.element = route.element;
             }
-          });
-        }
-      };
+          }
+          if (route.children?.length) {
+            route.children.forEach((childRoute) => {
+              if (childRoute.element) {
+                privateRoutes.push({
+                  path: childRoute.key,
+                  element: childRoute.element,
+                  isPrivate: true,
+                });
+                if (childRoute.default) {
+                  defaultPage.element = childRoute.element;
+                }
+              }
+            });
+          }
+        };
 
-      menuItems.forEach(processRoute);
-      const allRoutes = [...config, ...privateRoutes, defaultPage];
-      setRoutes(allRoutes.filter((route) => route.isPrivate));
+        menuItems.forEach(processRoute);
+        const allRoutes = [...config, ...privateRoutes, defaultPage];
+        setRoutes(allRoutes.filter((route) => route.isPrivate));
+      }
+    } catch (error) {
+      console.log("error processing routes ", error);
+    } finally {
+      setLoading(false);
     }
   }, [currentUser]);
 
@@ -62,7 +70,9 @@ const MainRoutes = () => {
         key="*"
         path="*"
         element={
-          !currentUser ?? (
+          loading ? (
+            <></>
+          ) : (
             <Page>
               <h1>404 - Page not found 💔</h1>
               <p>
