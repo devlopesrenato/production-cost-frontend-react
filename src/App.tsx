@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { notification } from "antd";
+import { notification, ConfigProvider } from "antd";
 
 import Routes from "./routes";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
@@ -60,9 +60,28 @@ const App = () => {
   return (
     <BrowserRouter>
       <ThemeProvider theme={themes[theme]}>
-        {!!currentUser && <Menu />}
-        <GlobalStyles />
-        <Routes />
+        <ConfigProvider
+          theme={{
+            token: {
+              colorText: themes[theme].colors.textColor,
+              colorBgContainer: themes[theme].colors.bgModal,
+              colorBgBase: themes[theme].colors.bgModal,
+            },
+            components: {
+              Modal: {
+                contentBg: themes[theme].colors.bgModal,
+                footerBg: themes[theme].colors.bgModal,
+                headerBg: themes[theme].colors.bgModal,
+                titleColor: themes[theme].colors.textColor,
+                colorBgBase: themes[theme].colors.bgModal,
+              },
+            },
+          }}
+        >
+          {!!currentUser && <Menu />}
+          <GlobalStyles />
+          <Routes />
+        </ConfigProvider>
       </ThemeProvider>
     </BrowserRouter>
   );
