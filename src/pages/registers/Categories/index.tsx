@@ -5,12 +5,9 @@ import Table from "../../../components/Table";
 import { ModalAdd } from "./components/ModalAdd";
 import { Global, ActionArea, ButtonEdit, ButtonDelete } from "./styled";
 import { ModalUpdate } from "./components/ModalUpdate";
-import { Modal } from "antd";
-import { ExclamationCircleFilled } from "@ant-design/icons";
 import { useAppDispatch } from "../../../redux/hooks";
 import { openNotification } from "../../../redux/notification/actions";
-
-const { confirm } = Modal;
+import Confirm from "../../../components/Confrim";
 
 const Categories = () => {
   const [data, setData] = useState<CategoryType[]>([]);
@@ -40,30 +37,20 @@ const Categories = () => {
     loadData();
   }, []);
 
-  const showDeleteConfirm = (data: CategoryType) => {
-    confirm({
-      title: "Are you sure you want to delete this category?",
-      icon: <ExclamationCircleFilled />,
-      content: data.name,
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      async onOk() {
-        const result = await deleteCategory(data.uuid);
-        if (result.status === 200) {
-          loadData();
-          return;
-        }
-        dispatch(
-          openNotification({
-            title: "Error deleting category",
-            message: result.data.error,
-            type: "warning",
-          })
-        );
-      },
-    });
-  };
+  async function deleteItem(data: CategoryType) {
+    const result = await deleteCategory(data.uuid);
+    if (result.status === 200) {
+      loadData();
+      return;
+    }
+    dispatch(
+      openNotification({
+        title: "Error deleting category",
+        message: result.data.error,
+        type: "warning",
+      })
+    );
+  }
 
   const _columns: ColumnsType[] = [
     ...columns,
@@ -93,9 +80,12 @@ const Categories = () => {
       fixed: "right",
       width: 80,
       render: (data) => (
-        <ButtonDelete onClick={() => showDeleteConfirm(data)}>
-          Delete
-        </ButtonDelete>
+        <Confirm
+          title="Are you sure you want to delete this category?"
+          message={data.name}
+          ok={() => deleteItem(data)}
+          children={<ButtonDelete>Delete</ButtonDelete>}
+        />
       ),
     },
   ];
@@ -112,30 +102,6 @@ const Categories = () => {
         <ModalAdd refresh={loadData} />
       </ActionArea>
       <Table dataSource={data} columns={_columns} loading={loading} />
-      {/* <Table       
-        tableLayout="auto"        
-        dataSource={data}
-        columns={_columns}
-        scroll={{ x: true }}        
-        style={{ 
-          width: "900px",
-          backgroundColor: '#494949'
-        }}
-        rowClassName="darkMode"        
-      /> */}
-      {/* <List
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item key={item.uuid}>
-            <List.Item.Meta title={item.name} />
-            <List.Item
-              actions={[
-                <Actions key={item.uuid} data={item} refresh={loadData} />,
-              ]}
-            />
-          </List.Item>
-        )}
-      /> */}
     </Global.Page>
   );
 };

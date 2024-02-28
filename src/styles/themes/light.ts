@@ -9,5 +9,6 @@ export default {
         borderTable: '#28282854',
         button: '#e0e0e0',
         buttonHover: '#FFFFFF',
+        bgModal: '#e0e0e0',
     }
 }
