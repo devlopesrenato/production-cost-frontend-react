@@ -5,7 +5,7 @@ const cookies = new Cookies();
 const token = cookies.get('@costprd:token');
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: import.meta.env.VITE_API_URL || "https://api-custodeproducao.onrender.com/",
     headers: {
         Authorization: `Bearer ${token}`
     }
