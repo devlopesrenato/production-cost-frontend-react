@@ -63,12 +63,6 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
     try {
       const result = await getUnitOfMeasurements();
       if (result.status === 200) {
-        console.log(
-          result.data.map((item: UnitOfMeasurementType) => ({
-            key: item.uuid,
-            label: item.name,
-          }))
-        );
         setUnitOfMeasurements(result.data);
         return;
       }
