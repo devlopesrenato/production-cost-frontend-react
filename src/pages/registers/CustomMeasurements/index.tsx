@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteCategory, getCategories } from "./service";
+import { deleteCustomMeasurement, getCustomMeasurements } from "./service";
 import columns from "./configs/columns";
 import Table from "../../../components/Table";
 import { ModalAdd } from "./components/ModalAdd";
@@ -9,19 +9,19 @@ import { useAppDispatch } from "../../../redux/hooks";
 import { openNotification } from "../../../redux/notification/actions";
 import Confirm from "../../../components/Confirm";
 
-const Categories = () => {
-  const [data, setData] = useState<CategoryType[]>([]);
+const CustomMeasurements = () => {
+  const [data, setData] = useState<CustomMeasurementType[]>([]);
   const [loading, setLoading] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
-  const [dataEditing, setDateEditing] = useState<CategoryType>(
-    {} as CategoryType
+  const [dataEditing, setDateEditing] = useState<CustomMeasurementType>(
+    {} as CustomMeasurementType
   );
   const dispatch = useAppDispatch();
 
   async function loadData() {
     setLoading(true);
     try {
-      const result = await getCategories();
+      const result = await getCustomMeasurements();
       if (result.status === 200) {
         setData(result.data);
         return;
@@ -37,15 +37,15 @@ const Categories = () => {
     loadData();
   }, []);
 
-  async function deleteItem(data: CategoryType) {
-    const result = await deleteCategory(data.uuid);
+  async function deleteItem(data: CustomMeasurementType) {
+    const result = await deleteCustomMeasurement(data.uuid);
     if (result.status === 200) {
       loadData();
       return;
     }
     dispatch(
       openNotification({
-        title: "Error deleting category",
+        title: "Error deleting custom measurement",
         message: result.data.error,
         type: "warning",
       })
@@ -81,7 +81,7 @@ const Categories = () => {
       width: 80,
       render: (data) => (
         <Confirm
-          title="Are you sure you want to delete this category?"
+          title="Are you sure you want to delete this custom measurement?"
           message={data.name}
           ok={() => deleteItem(data)}
           children={<ButtonDelete>Delete</ButtonDelete>}
@@ -106,4 +106,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default CustomMeasurements;

@@ -3,6 +3,7 @@ export const pageNames = {
     "home": "Home",
     "registers": "Registers",
     "registers/categories": "Categories",
+    "registers/custom-measurements": "Custom Measurements",
 }
 
 export const systemPageNames = {
