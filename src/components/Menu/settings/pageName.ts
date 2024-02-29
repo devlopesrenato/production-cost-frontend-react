@@ -4,6 +4,7 @@ export const pageNames = {
     "registers": "Registers",
     "registers/categories": "Categories",
     "registers/custom-measurements": "Custom Measurements",
+    "registers/feedstocks": "Feedstocks",
 }
 
 export const systemPageNames = {

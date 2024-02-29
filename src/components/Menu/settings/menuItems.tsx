@@ -6,6 +6,7 @@ import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import Categories from "../../../pages/registers/Categories";
 import Home from "../../../pages/Home";
 import CustomMeasurements from "../../../pages/registers/CustomMeasurements";
+import Feedstock from "../../../pages/registers/Feedstock";
 
 interface MenuItemRoute {
   element?: JSX.Element;
@@ -45,6 +46,11 @@ const menuItems: MenuItemRoute[] = [
         key: "registers/custom-measurements",
         label: pageName("registers/custom-measurements"),
         element: <CustomMeasurements />,
+      },
+      {
+        key: "registers/feedstocks",
+        label: pageName("registers/feedstocks"),
+        element: <Feedstock />,
       },
     ],
   },
