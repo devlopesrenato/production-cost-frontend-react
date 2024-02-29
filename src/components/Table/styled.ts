@@ -16,10 +16,13 @@ const STable = styled.table`
 
 const STHead = styled.thead`
     background-color: ${({ theme }) => theme.colors.backgroundHeadTable};
+    position: sticky;
 `
 
 const STBody = styled.tbody`
     background-color: ${({ theme }) => theme.colors.backgroundRowTable};
+    overflow-y: auto;
+    max-height: calc(100vh - 180px);
 `
 
 const STRow = styled.tr`
@@ -35,6 +38,7 @@ const STRow = styled.tr`
 
 const STHeadRow = styled.tr`
     display: flex;    
+    position: sticky;
     border-radius: 10px 10px 0 0;
 `
 
