@@ -38,19 +38,21 @@ const STHeadRow = styled.tr`
     border-radius: 10px 10px 0 0;
 `
 
-const STCell = styled.tr`
+const STCell = styled.tr<{ align: string | undefined }>`
     display: flex;
-    justify-content: space-between;
+    justify-content: ${({ align }) => align};
     align-items: center;
     padding: 10px;
     color: ${({ theme }) => theme.colors.textColor};   
     background-color: ${({ theme }) => theme.colors.backgroundRowTable};
 `
 
-const STCellContent = styled.div`
+const STHeaderCellContent = styled.div<{ align: string | undefined }>`
     width: 100%;
     display: flex;
-`
+    justify-content: ${({ align }) => align};
+    font-weight: bold;
+    `
 
 const STHeaderCell = styled.tr`
     display: flex;
@@ -59,6 +61,10 @@ const STHeaderCell = styled.tr`
     padding: 10px;
     color: ${({ theme }) => theme.colors.textColor};   
     background-color: ${({ theme }) => theme.colors.backgroundHeadTable};
+    &:hover {
+        background-color: ${({ theme }) => theme.colors.backgroundHoverHeadTable};
+        cursor: pointer;
+    }
 `
 
 export {
@@ -68,6 +74,6 @@ export {
     STRow,
     STCell,
     STHeaderCell,
-    STCellContent,
+    STHeaderCellContent,
     STHeadRow,
 }

@@ -4,6 +4,7 @@ export default {
         backgroundGray: '#727272',
         textColor: '#282828',
         backgroundHeadTable: '#e0e0e0',
+        backgroundHoverHeadTable: '#a1a1a1',
         backgroundRowTable: '#FFFFFF',
         backgroundHoverRowTable: '#e1e1e1',
         borderTable: '#28282854',
