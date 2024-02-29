@@ -7,3 +7,10 @@ export function setUser(values: { id?: string, name?: string, token?: string }) 
         payload: { id, name, token },
     };
 }
+
+export function logout() {
+    return {
+        type: UserActionTypes.LOGOUT,
+        payload: null
+    };
+}

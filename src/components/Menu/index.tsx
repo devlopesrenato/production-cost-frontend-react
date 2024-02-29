@@ -4,13 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Button, Menu as MenuAnt, MenuProps as MenuAntProps } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 
+import { MenuBackground, NavBar, NavBarMenu, Title } from "./styled";
+import SwitchTheme from "../SwitchTheme";
 import pageName, { pageNames } from "./settings/pageName";
 import menuItems from "./settings/menuItems";
 import { useAppDispatch } from "../../redux/hooks";
-import { setUser } from "../../redux/user/actions";
-import { MenuBackground, NavBar, NavBarMenu } from "./styled";
-import { Title } from "./styled";
-import SwitchTheme from "../SwitchTheme";
+import { logout } from "../../redux/user/actions";
 
 export const Menu = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -22,7 +21,7 @@ export const Menu = () => {
 
   const onClick: MenuAntProps["onClick"] = (e) => {
     if (e.key === "logout") {
-      dispatch(setUser({}));
+      dispatch(logout());
       return;
     }
     setCurrent(e.keyPath);

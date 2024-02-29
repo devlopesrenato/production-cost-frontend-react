@@ -19,28 +19,23 @@ interface UserAction {
 }
 
 function setCookies(payload: User) {
-    cookies.set("@costprd:userData", JSON.stringify({ id: payload.id, name: payload.name }), { maxAge: 999990 });
-    cookies.set('@costprd:token', payload.token, { maxAge: 999990 });
-}
-
-function removeCookies() {
-    cookies.remove("@costprd:userData");
-    cookies.remove('@costprd:token');
+    cookies.set("@costprd:userData", JSON.stringify({ ...payload, token: undefined }), { maxAge: 999990, path: '/' });
+    cookies.set('@costprd:token', payload.token, { maxAge: 999990, path: '/' });
 }
 
 const userReducer = (state = initialState, action: UserAction) => {
     switch (action.type) {
         case UserActionTypes.SET_USER: {
-            const { id, name, token } = action.payload;
-            var user;
-            if (!id || !name || !token) {
-                removeCookies()
-            } else {
-                setCookies({ id, name, token });
-                user = action.payload;
-            }
-            return { ...state, currentUser: user }
+            setCookies(action.payload)
+            return { ...state, currentUser: action.payload }
         }
+
+        case UserActionTypes.LOGOUT: {
+            cookies.set("@costprd:userData", null, { maxAge: 0 });
+            cookies.set("@costprd:token", null, { maxAge: 0 });
+            return { ...state, currentUser: null }
+        }
+
         default: {
             return state;
         }
