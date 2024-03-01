@@ -126,12 +126,11 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
             </STHeadRow>
           </STHead>
           <STBody
-            style={{
-              width: columns.reduce(
-                (acc, act) => (acc += Number(act.width) || 100),
-                0
-              ),
-            }}
+            hasData={!!dataSource.length}
+            width={columns.reduce(
+              (acc, act) => (acc += Number(act.width) || 100),
+              0
+            )}
           >
             {processedData.map((data) => (
               <STRow>

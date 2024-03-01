@@ -15,22 +15,21 @@ const STable = styled.table<{ overflowY?: boolean, overflowX?: boolean }>`
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-height : 50px;
     max-height: calc(100vh - 180px);
     overflow-y: ${({ overflowY }) => overflowY ? 'auto' : 'hidden'};
     overflow-x: ${({ overflowX }) => overflowX ? 'auto' : 'hidden'};
-`
+    `
 
 const STHead = styled.thead<{ width: number }>`
     background-color: ${({ theme }) => theme.colors.backgroundHeadTable};
     position: sticky;
     top: 0;
     z-index: 1000;
-`
+    `
 
-const STBody = styled.tbody`
+const STBody = styled.tbody<{ hasData?: boolean, width: number }>`
     background-color: ${({ theme }) => theme.colors.backgroundRowTable};
-    min-height: 100px;
+    min-height: ${({ hasData }) => hasData ? '' : '100px'};    
 `
 
 const STRow = styled.tr`
