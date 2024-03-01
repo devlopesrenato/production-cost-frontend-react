@@ -18,33 +18,42 @@ const fadeIn = keyframes`
   }
 `;
 
-const Background = styled.div<{ loading: boolean }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;        
-  min-height: ${({ loading }) => loading ? '150px' : undefined};
-  background-color: ${({ theme }) => theme.colors.backgroundRowTable};
-  #svg-load {
+const SLoading = styled.div<{ loading: boolean }>`
+  position: relative;
+  animation: ${fadeIn} 0.3s ease-in;
+`
+
+const SLoadingSpinner = styled.div`
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  z-index: 4;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 400px;
+  #svg-loading {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 50%;
+    margin: -10px; 
     font-size: 35px;
     color: ${({ theme }) => theme.colors.textColor};
-    animation: ${rotate} 0.9s linear infinite;
+    animation: ${rotate} 0.9s linear infinite;    
   }
 `
 
-const Overlay = styled.div<{ loading: boolean; width: number; height: number }>`
-  display: ${({ loading }) => (loading ? "flex" : "none")};
-  position: absolute;
-  min-height: 50px;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px; 
-  background-color: rgba(255, 255, 255, 0.5);
-  justify-content: center;
-  align-items: center;
-  animation: ${fadeIn} 0.3s ease-in;
-`;
+const SLoadingContent = styled.div<{ loading: boolean }>`
+  position: relative;
+  transition: opacity 0.3s;
+  clear: ${({ loading }) => loading ? 'both' : ''};
+  opacity: ${({ loading }) => loading ? 0.5 : ''};
+  user-select: ${({ loading }) => loading ? 'none' : ''};
+  pointer-events: ${({ loading }) => loading ? 'none' : ''};
+`
 
 export {
-  Background,
-  Overlay
+  SLoading,
+  SLoadingSpinner,
+  SLoadingContent,
 }

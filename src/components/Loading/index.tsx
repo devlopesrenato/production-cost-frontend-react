@@ -1,6 +1,6 @@
+import React from "react";
 import { LuRefreshCw } from "react-icons/lu";
-import { Background, Overlay } from "./styled";
-import React, { useEffect, useRef, useState } from "react";
+import { SLoading, SLoadingSpinner, SLoadingContent } from "./styled";
 
 interface LoadingProps {
   backColor?: string;
@@ -13,28 +13,22 @@ export const Loading: React.FC<LoadingProps> = ({
   children,
   loading = true,
 }) => {
-  const [overlaySize, setOverlaySize] = useState({ width: 0, height: 0 });
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current) {
-      const { offsetWidth, offsetHeight } = ref.current;
-      setOverlaySize({ width: offsetWidth || 100, height: offsetHeight || 100 });
-    }
-  }, [children, loading]);
 
   return (
-    <Background style={{ backgroundColor: backColor }} ref={ref}  loading={loading}>
-      {children}
-      {loading && (
-        <Overlay
-          loading={loading}
-          width={overlaySize.width}
-          height={overlaySize.height}
-        >
-          <LuRefreshCw id="svg-load"/>
-        </Overlay>
+    <SLoading
+      style={{ backgroundColor: backColor }}
+      loading={loading}
+    >
+      {loading ? (
+        <div>
+          <SLoadingSpinner>
+            <LuRefreshCw id="svg-loading" />
+          </SLoadingSpinner>
+        </div>
+      ) : (
+        <></>
       )}
-    </Background>
+      <SLoadingContent loading={loading}>{children}</SLoadingContent>
+    </SLoading>
   );
 };
