@@ -3,6 +3,7 @@ import {
   STBody,
   STHead,
   STRow,
+  STableContainer,
   STable,
   STCell,
   STHeadRow,
@@ -20,7 +21,7 @@ interface TableProps {
 
 interface Ordination {
   column: string;
-  order: "ASC" | "DESC";
+  order: "ASC" | "DESC" | "";
 }
 
 const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
@@ -52,6 +53,20 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
     }
   }
 
+  function columnOrdering(columnName: string) {
+    switch (ordination.order + ordination.column) {
+      case "ASC" + columnName:
+        setOrdination({ column: columnName, order: "DESC" });
+        break;
+      case "DESC" + columnName:
+        setOrdination({ column: "", order: "" });
+        break;
+      default:
+        setOrdination({ column: columnName, order: "ASC" });
+        break;
+    }
+  }
+
   useEffect(() => {
     setProcessedData(processData());
   }, [dataSource, ordination]);
@@ -75,69 +90,70 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
   }
 
   return (
-    <STable>
-      <Loading loading={loading}>
-        <STHead
-          style={{
-            width: columns.reduce(
+    <Loading loading={loading}>
+      <STableContainer>
+        <STable overflowY overflowX>
+          <STHead
+            width={columns.reduce(
               (acc, act) => (acc += Number(act.width) || 100),
               0
-            ),
-          }}
-        >
-          <STHeadRow>
-            {columns.map((column, index) => (
-              <STHeaderCell
-                key={column.key}
-                style={{ ...cellStyles(column, index), minHeight: 41 }}
-              >
-                <STHeaderCellContent align={column.align}>
-                  {column.title}
-                </STHeaderCellContent>
-                {column.sort && !loading ? (
-                  <ArrowSort
-                    onclick={(column, ordination) =>
-                      setOrdination({ column, order: ordination })
-                    }
-                    ordination={ordination}
-                    column={column.dataIndex}
-                    key={column.key}
-                  />
-                ) : (
-                  <></>
-                )}
-              </STHeaderCell>
+            )}
+          >
+            <STHeadRow>
+              {columns.map((column, index) => (
+                <STHeaderCell
+                  hover={column.sort}
+                  key={column.key}
+                  style={{ ...cellStyles(column, index), minHeight: 41 }}
+                  onClick={() =>
+                    column.sort && !loading && columnOrdering(column.dataIndex)
+                  }
+                >
+                  <STHeaderCellContent align={column.align}>
+                    {column.title}
+                  </STHeaderCellContent>
+                  {column.sort ? (
+                    <ArrowSort
+                      ordination={ordination}
+                      column={column.dataIndex}
+                      key={column.key}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </STHeaderCell>
+              ))}
+            </STHeadRow>
+          </STHead>
+          <STBody
+            style={{
+              width: columns.reduce(
+                (acc, act) => (acc += Number(act.width) || 100),
+                0
+              ),
+            }}
+          >
+            {processedData.map((data) => (
+              <STRow>
+                {columns.map((column, index) => {
+                  const fnRender = column.render;
+                  return (
+                    <STCell
+                      style={cellStyles(column, index)}
+                      align={column.align}
+                    >
+                      {fnRender
+                        ? fnRender(data, data[column.dataIndex])
+                        : data[column.dataIndex]}
+                    </STCell>
+                  );
+                })}
+              </STRow>
             ))}
-          </STHeadRow>
-        </STHead>
-        <STBody
-          style={{
-            width: columns.reduce(
-              (acc, act) => (acc += Number(act.width) || 100),
-              0
-            ),
-          }}
-        >
-          {processedData.map((data) => (
-            <STRow>
-              {columns.map((column, index) => {
-                const fnRender = column.render;
-                return (
-                  <STCell
-                    style={cellStyles(column, index)}
-                    align={column.align}
-                  >
-                    {fnRender
-                      ? fnRender(data, data[column.dataIndex])
-                      : data[column.dataIndex]}
-                  </STCell>
-                );
-              })}
-            </STRow>
-          ))}
-        </STBody>
-      </Loading>
-    </STable>
+          </STBody>
+        </STable>
+      </STableContainer>
+    </Loading>
   );
 };
 

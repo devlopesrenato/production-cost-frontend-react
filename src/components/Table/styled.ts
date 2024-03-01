@@ -1,7 +1,12 @@
 import styled from "styled-components";
 
-const STable = styled.table`
-    table-layout: auto;
+const STableContainer = styled.div`
+    overflow: hidden;
+    max-width: 95vw;
+`
+
+const STable = styled.table<{ overflowY?: boolean, overflowX?: boolean }>`
+    table-layout: fixed;
     text-align: start;
     border-radius: 8px 8px 0 0;
     border-collapse: separate;
@@ -9,20 +14,23 @@ const STable = styled.table`
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     display: flex;
     flex-direction: column;
-    overflow-x: auto;
-    max-width: 95%;
-    min-width: 350px;
+    width: 100%;
+    min-height : 50px;
+    max-height: calc(100vh - 180px);
+    overflow-y: ${({ overflowY }) => overflowY ? 'auto' : 'hidden'};
+    overflow-x: ${({ overflowX }) => overflowX ? 'auto' : 'hidden'};
 `
 
-const STHead = styled.thead`
+const STHead = styled.thead<{ width: number }>`
     background-color: ${({ theme }) => theme.colors.backgroundHeadTable};
     position: sticky;
+    top: 0;
+    z-index: 1000;
 `
 
 const STBody = styled.tbody`
     background-color: ${({ theme }) => theme.colors.backgroundRowTable};
-    overflow-y: auto;
-    max-height: calc(100vh - 180px);
+    min-height: 100px;
 `
 
 const STRow = styled.tr`
@@ -58,7 +66,7 @@ const STHeaderCellContent = styled.div<{ align: string | undefined }>`
     font-weight: bold;
     `
 
-const STHeaderCell = styled.tr`
+const STHeaderCell = styled.tr<{ hover?: boolean }>`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -66,12 +74,13 @@ const STHeaderCell = styled.tr`
     color: ${({ theme }) => theme.colors.textColor};   
     background-color: ${({ theme }) => theme.colors.backgroundHeadTable};
     &:hover {
-        background-color: ${({ theme }) => theme.colors.backgroundHoverHeadTable};
-        cursor: pointer;
+        background-color: ${({ theme, hover }) => hover ? theme.colors.backgroundHoverHeadTable : ''};
+        cursor:  ${({ hover }) => hover ? 'pointer' : ''} ;
     }
 `
 
 export {
+    STableContainer,
     STable,
     STHead,
     STBody,

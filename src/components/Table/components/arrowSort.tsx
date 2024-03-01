@@ -9,33 +9,22 @@ import { ArrowButton } from "./styled";
 interface ArrowSortProps {
   ordination: {
     column: string;
-    order: "ASC" | "DESC";
+    order: "ASC" | "DESC" | "";
   };
   column: string;
-  onclick?: (column: string, ordination: "ASC" | "DESC") => void;
 }
 
-const ArrowSort: React.FC<ArrowSortProps> = ({
-  ordination,
-  column,
-  onclick,
-}) => {
+const ArrowSort: React.FC<ArrowSortProps> = ({ ordination, column }) => {
   return (
     <ArrowButton>
       {ordination.column === column ? (
         ordination.order === "ASC" ? (
-          <FaLongArrowAltDown
-            onClick={() => onclick && onclick(column, "DESC")}
-            color="#6298fc"
-          />
+          <FaLongArrowAltDown color="#6298fc" />
         ) : (
-          <FaLongArrowAltUp
-            onClick={() => onclick && onclick("", "ASC")}
-            color="#6298fc"
-          />
+          <FaLongArrowAltUp color="#6298fc" />
         )
       ) : (
-        <FaArrowsAltV onClick={() => onclick && onclick(column, "ASC")} />
+        <FaArrowsAltV />
       )}
     </ArrowButton>
   );
