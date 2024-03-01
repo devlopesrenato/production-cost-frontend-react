@@ -7,6 +7,7 @@ import Categories from "../../../pages/registers/Categories";
 import Home from "../../../pages/Home";
 import CustomMeasurements from "../../../pages/registers/CustomMeasurements";
 import Feedstock from "../../../pages/registers/Feedstock";
+import OtherCosts from "../../../pages/registers/OtherCosts";
 
 interface MenuItemRoute {
   element?: JSX.Element;
@@ -51,6 +52,11 @@ const menuItems: MenuItemRoute[] = [
         key: "registers/feedstocks",
         label: pageName("registers/feedstocks"),
         element: <Feedstock />,
+      },
+      {
+        key: "registers/other-costs",
+        label: pageName("registers/other-costs"),
+        element: <OtherCosts />,
       },
     ],
   },

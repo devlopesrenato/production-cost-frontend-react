@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, FormInstance, Input, InputNumber, Modal } from "antd";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
-import { createFeedstock, getCustomMeasurements } from "../../service";
+import { createOtherCost } from "../../service";
 import { openNotification } from "../../../../../redux/notification/actions";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import Button from "../../../../../components/Button";
@@ -14,9 +14,6 @@ interface ModalProps {
 export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [customMeasurements, setCustomMeasurements] = useState<
-  CustomMeasurementType[]
->([]);
   const formRef = React.useRef<FormInstance>(null);
   const dispatch = useAppDispatch();
 
@@ -28,12 +25,12 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
     setConfirmLoading(true);
     formRef.current
       ?.validateFields()
-      .then(async ({ name, quantity, customMeasurementId, price }) => {
+      .then(async ({ name, quantity, type, price }) => {
         if (name.trim() !== "") {
-          const result = await createFeedstock({
+          const result = await createOtherCost({
             name: name.trim(),
             quantity,
-            customMeasurementId,
+            type,
             price,
           });
           if (result.status === 201) {
@@ -43,7 +40,7 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
           }
           dispatch(
             openNotification({
-              title: "Error adding feedstock",
+              title: "Error adding cost",
               message: result.data.error,
               type: "warning",
             })
@@ -60,21 +57,8 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
     setOpen(false);
   };
 
-  const loadCustomMeasurements = async () => {
-    try {
-      const result = await getCustomMeasurements();
-      if (result.status === 200) {
-        setCustomMeasurements(result.data);
-        return;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     formRef.current?.resetFields();
-    loadCustomMeasurements();
   }, [open]);
 
   return (
@@ -92,7 +76,7 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
       />
       <Modal
         zIndex={1002}
-        title="Add feedstock"
+        title="Add OtherCost"
         open={open}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -123,15 +107,15 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
           </Form.Item>
 
           <Form.Item
-            label="Custom Measurement"
-            name="customMeasurementId"
-            rules={[{ required: true, message: "Enter a custom measurement" }]}
+            label="Type"
+            name="type"
+            rules={[{ required: true, message: "Select a type" }]}
           >
             <Select
-              data={customMeasurements.map((item) => ({
-                key: item.uuid,
-                label: item.name,
-              }))}
+              data={[
+                { key: "distributed", label: "Distributed" },
+                { key: "manual", label: "Manual" },
+              ]}
             />
           </Form.Item>
 
