@@ -11,11 +11,12 @@ interface SelectProps {
   data: SelectDataType[];
   onChange?: (value: string) => void;
   value?: string | number;
+  disabled?: boolean;
   props?: SelectPropsAnt;
 }
 
 export const Select: React.FC<SelectProps> = (
-  { data, onChange, value },
+  { data, onChange, value, disabled },
   props
 ) => {
   const [dataSource, setDataSource] = useState<SelectDataType[]>([]);
@@ -27,6 +28,7 @@ export const Select: React.FC<SelectProps> = (
   return (
     <SelectAnt
       {...props}
+      disabled={disabled}
       defaultValue={value}
       onChange={onChange && onChange}
       showSearch
