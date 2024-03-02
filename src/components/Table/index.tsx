@@ -9,10 +9,11 @@ import {
   STHeadRow,
   STHeaderCellContent,
   STHeaderCell,
+  NoData,
 } from "./styled";
 import ArrowSort from "./components/arrowSort";
 import { Loading } from "../Loading";
-
+import { RiArchive2Line } from "react-icons/ri";
 interface TableProps {
   columns: ColumnsType[];
   dataSource: any[];
@@ -76,11 +77,15 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
 
     const isLast = index === columns.length - 1;
     const after = columns[index + 1];
-    const fixedEnd = isLast ? 0 : after?.fixed ? Number(width) : undefined;
+    const fixedEnd = isLast ? -1 : after?.fixed ? Number(width) - 2 : undefined;
 
     const isFirst = index === 0;
     const before = columns[index - 1];
-    const fixedStart = isFirst ? 0 : before?.fixed ? Number(width) : undefined;
+    const fixedStart = isFirst
+      ? -1
+      : before?.fixed
+      ? Number(width) - 2
+      : undefined;
     return {
       width,
       position: colStyle.fixed ? "sticky" : undefined,
@@ -89,27 +94,26 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
     } as React.CSSProperties;
   }
 
+  const minWidth = columns.reduce(
+    (acc, act) => (acc += Number(act.width) || 100),
+    0
+  );
   return (
     <Loading loading={loading}>
       <STableContainer>
-        <STable overflowY overflowX>
-          <STHead
-            width={columns.reduce(
-              (acc, act) => (acc += Number(act.width) || 100),
-              0
-            )}
-          >
+        <STable $overflowY="auto" $overflowX="auto">
+          <STHead $width={minWidth}>
             <STHeadRow>
               {columns.map((column, index) => (
                 <STHeaderCell
-                  hover={column.sort}
+                  $hover={column.sort ? "true" : "false"}
                   key={column.key}
                   style={{ ...cellStyles(column, index), minHeight: 41 }}
                   onClick={() =>
                     column.sort && !loading && columnOrdering(column.dataIndex)
                   }
                 >
-                  <STHeaderCellContent align={column.align}>
+                  <STHeaderCellContent $align={column.align}>
                     {column.title}
                   </STHeaderCellContent>
                   {column.sort ? (
@@ -126,29 +130,36 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
             </STHeadRow>
           </STHead>
           <STBody
-            hasData={!!dataSource.length}
-            width={columns.reduce(
-              (acc, act) => (acc += Number(act.width) || 100),
-              0
-            )}
+            $hasData={!!dataSource.length ? "true" : "false"}
+            $width={minWidth}
           >
-            {processedData.map((data) => (
-              <STRow>
-                {columns.map((column, index) => {
-                  const fnRender = column.render;
-                  return (
-                    <STCell
-                      style={cellStyles(column, index)}
-                      align={column.align}
-                    >
-                      {fnRender
-                        ? fnRender(data, data[column.dataIndex])
-                        : data[column.dataIndex]}
-                    </STCell>
-                  );
-                })}
-              </STRow>
-            ))}
+            {processedData.length ? (
+              processedData.map((data, index) => (
+                <STRow key={index}>
+                  {columns.map((column, index) => {
+                    const fnRender = column.render;
+                    return (
+                      <STCell
+                        key={index}
+                        style={cellStyles(column, index)}
+                        $align={column.align}
+                      >
+                        {fnRender
+                          ? fnRender(data, data[column.dataIndex])
+                          : data[column.dataIndex]}
+                      </STCell>
+                    );
+                  })}
+                </STRow>
+              ))
+            ) : (
+              <tr>
+                <NoData>
+                  <RiArchive2Line />
+                  No data
+                </NoData>
+              </tr>
+            )}
           </STBody>
         </STable>
       </STableContainer>

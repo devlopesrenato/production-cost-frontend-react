@@ -13,12 +13,8 @@ export const Loading: React.FC<LoadingProps> = ({
   children,
   loading = true,
 }) => {
-
   return (
-    <SLoading
-      style={{ backgroundColor: backColor }}
-      loading={loading}
-    >
+    <SLoading style={{ backgroundColor: backColor }}>
       {loading ? (
         <div>
           <SLoadingSpinner>
@@ -28,7 +24,9 @@ export const Loading: React.FC<LoadingProps> = ({
       ) : (
         <></>
       )}
-      <SLoadingContent loading={loading}>{children}</SLoadingContent>
+      <SLoadingContent $loading={loading ? "true" : "false"}>
+        {children}
+      </SLoadingContent>
     </SLoading>
   );
 };

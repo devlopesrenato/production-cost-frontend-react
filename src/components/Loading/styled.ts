@@ -18,7 +18,7 @@ const fadeIn = keyframes`
   }
 `;
 
-const SLoading = styled.div<{ loading: boolean }>`
+const SLoading = styled.div`
   position: relative;
   animation: ${fadeIn} 0.3s ease-in;
 `
@@ -43,13 +43,13 @@ const SLoadingSpinner = styled.div`
   }
 `
 
-const SLoadingContent = styled.div<{ loading: boolean }>`
+const SLoadingContent = styled.div<{ $loading: "true" | "false" }>`
   position: relative;
   transition: opacity 0.3s;
-  clear: ${({ loading }) => loading ? 'both' : ''};
-  opacity: ${({ loading }) => loading ? 0.5 : ''};
-  user-select: ${({ loading }) => loading ? 'none' : ''};
-  pointer-events: ${({ loading }) => loading ? 'none' : ''};
+  clear: ${({ $loading }) => $loading === "true" ? 'both' : ''};
+  opacity: ${({ $loading }) => $loading === "true" ? 0.5 : ''};
+  user-select: ${({ $loading }) => $loading === "true" ? 'none' : ''};
+  pointer-events: ${({ $loading }) => $loading === "true" ? 'none' : ''};
 `
 
 export {
