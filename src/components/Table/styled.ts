@@ -5,6 +5,10 @@ const STableContainer = styled.div`
     min-width: 430px;
 `
 
+const STableTitle = styled.div`
+    width: 100%;
+`
+
 const STable = styled.table<{ $hasData?: "true" | "false", $overflowY?: "auto" | "hidden", $overflowX?: "auto" | "hidden" }>`
     table-layout: fixed;
     text-align: start;
@@ -98,6 +102,7 @@ const NoData = styled.td`
 export {
     STableContainer,
     STable,
+    STableTitle,
     STHead,
     STBody,
     STRow,

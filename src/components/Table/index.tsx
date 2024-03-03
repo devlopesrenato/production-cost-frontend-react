@@ -10,6 +10,7 @@ import {
   STHeaderCellContent,
   STHeaderCell,
   NoData,
+  STableTitle,
 } from "./styled";
 import ArrowSort from "./components/ArrowSort";
 import Search from "./components/Search";
@@ -20,6 +21,7 @@ interface TableProps {
   columns: ColumnsType[];
   dataSource: any[];
   loading?: boolean;
+  title?: JSX.Element | string | number;
 }
 
 interface Ordination {
@@ -32,7 +34,7 @@ type Search = {
   value: string;
 }[];
 
-const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
+const Table: React.FC<TableProps> = ({ columns, dataSource, loading, title }) => {
   const [processedData, setProcessedData] = useState<any[]>([]);
   const [ordination, setOrdination] = useState<Ordination>({
     column: "",
@@ -139,6 +141,7 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading }) => {
   return (
     <Loading loading={loading}>
       <STableContainer>
+        <STableTitle>{title}</STableTitle>
         <STable
           $overflowY="auto"
           $overflowX="auto"
