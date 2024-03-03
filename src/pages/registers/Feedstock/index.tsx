@@ -3,7 +3,7 @@ import { deleteFeedstock, getFeedstocks } from "./service";
 import columns from "./configs/columns";
 import Table from "../../../components/Table";
 import { ModalAdd } from "./components/ModalAdd";
-import { Global, ActionArea, ButtonEdit, ButtonDelete } from "./styled";
+import { Global } from "./styled";
 import { ModalUpdate } from "./components/ModalUpdate";
 import { useAppDispatch } from "../../../redux/hooks";
 import { openNotification } from "../../../redux/notification/actions";
@@ -62,14 +62,14 @@ const Feedstock = () => {
       fixed: "right",
       width: 80,
       render: (data) => (
-        <ButtonEdit
+        <Global.ButtonEdit
           onClick={() => {
             setDateEditing(data);
             setOpenModalUpdate(true);
           }}
         >
           Edit
-        </ButtonEdit>
+        </Global.ButtonEdit>
       ),
     },
     {
@@ -84,7 +84,7 @@ const Feedstock = () => {
           title="Are you sure you want to delete this feedstock?"
           message={data.name}
           ok={() => deleteItem(data)}
-          children={<ButtonDelete>Delete</ButtonDelete>}
+          children={<Global.ButtonDelete>Delete</Global.ButtonDelete>}
         />
       ),
     },
@@ -98,10 +98,16 @@ const Feedstock = () => {
         close={() => setOpenModalUpdate(false)}
         refresh={loadData}
       />
-      <ActionArea>
-        <ModalAdd refresh={loadData} />
-      </ActionArea>
-      <Table dataSource={data} columns={_columns} loading={loading} />
+      <Table
+        title={
+          <Global.ActionArea>
+            <ModalAdd refresh={loadData} />
+          </Global.ActionArea>
+        }
+        dataSource={data}
+        columns={_columns}
+        loading={loading}
+      />
     </Global.Page>
   );
 };
