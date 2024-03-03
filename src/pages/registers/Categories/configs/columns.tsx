@@ -7,6 +7,7 @@ const columns: ColumnsType[] = [
     key: "name",    
     width: 300,
     sort: true,
+    search: true,
   },
   {
     title: "Created by",
@@ -15,6 +16,7 @@ const columns: ColumnsType[] = [
     align: "center",
     width: 150,
     sort: true,
+    search: true,
   },
   {
     title: "Created at",
@@ -22,6 +24,7 @@ const columns: ColumnsType[] = [
     align: "center",
     key: "createDate",
     sort: true,
+    search: true,
     width: 150,
     render: (_, value) =>
       dayjs(value, "YYYY-MM-DDTHH:mm:ss.SSSZ").format("YYYY-MM-DD"),
