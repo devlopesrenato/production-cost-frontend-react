@@ -36,3 +36,24 @@ export const Description = styled.p`
     color: #FFF;
     text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
 `
+
+export const ActionArea = styled.div`
+display: flex;
+justify-content: flex-end;    
+width: 100%;
+padding: 10px 0;
+`
+
+export const ButtonEdit = styled.div`
+    color: #000091;
+    &:hover {
+        cursor: pointer; 
+    }
+`
+
+export const ButtonDelete = styled.div`
+    color: #ab0000;
+    &:hover {
+        cursor: pointer; 
+    }
+`
