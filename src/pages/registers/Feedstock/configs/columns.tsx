@@ -7,14 +7,16 @@ const columns: ColumnsType[] = [
     key: "name",
     width: 250,
     sort: true,
+    search: true,
   },
   {
     title: "Quantity",
     dataIndex: "quantity",
     key: "quantity",
     align: "center",
-    width: 110,
+    width: 130,
     sort: true,
+    search: true,
   },
   {
     title: "Custom Measurement",
@@ -23,6 +25,7 @@ const columns: ColumnsType[] = [
     align: "center",
     width: 200,
     sort: true,
+    search: true,
   },
   {
     title: "Price",
@@ -31,6 +34,7 @@ const columns: ColumnsType[] = [
     align: "center",
     width: 110,
     sort: true,
+    search: true,
   },
   {
     title: "Created by",
@@ -39,6 +43,7 @@ const columns: ColumnsType[] = [
     align: "center",
     width: 150,
     sort: true,
+    search: true,
   },
   {
     title: "Created at",
@@ -46,6 +51,7 @@ const columns: ColumnsType[] = [
     align: "center",
     key: "createDate",
     sort: true,
+    search: true,
     width: 150,
     render: (_, value) =>
       dayjs(value, "YYYY-MM-DDTHH:mm:ss.SSSZ").format("YYYY-MM-DD"),

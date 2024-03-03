@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 const STableContainer = styled.div`
-    overflow: hidden;
     max-width: 95vw;
+    min-width: 430px;
 `
 
-const STable = styled.table<{ $overflowY?: "auto" | "hidden", $overflowX?: "auto" | "hidden" }>`
+const STable = styled.table<{ $hasData?: "true" | "false", $overflowY?: "auto" | "hidden", $overflowX?: "auto" | "hidden" }>`
     table-layout: fixed;
     text-align: start;
     border-radius: 8px 8px 0 0;
@@ -16,6 +16,7 @@ const STable = styled.table<{ $overflowY?: "auto" | "hidden", $overflowX?: "auto
     flex-direction: column;
     width: 100%;
     max-height: calc(100vh - 180px);
+    min-height: ${({ $hasData }) => $hasData === "true" ? '300px' : '100px'};
     overflow-y: ${({ $overflowY }) => $overflowY};
     overflow-x: ${({ $overflowX }) => $overflowX};
 `
@@ -55,8 +56,8 @@ const STHeaderCellContent = styled.div<{ $align: string | undefined }>`
 `
 
 const STBody = styled.tbody<{ $hasData?: "true" | "false", $width: number }>`
-    background-color: ${({ theme }) => theme.colors.backgroundRowTable};
-    min-height: ${({ $hasData }) => $hasData === "true" ? '' : '100px'};
+    background-color: ${({ theme }) => theme.colors.backgroundHeadTable};
+    min-height: ${({ $hasData }) => $hasData === "true" ? '300px' : '100px'};
     min-width: ${({ $width }) => $width}px;
 `
 
@@ -74,7 +75,8 @@ const STRow = styled.tr`
 const STCell = styled.td<{ $align: string | undefined }>`
     display: flex;
     justify-content: ${({ $align }) => $align};
-    align-items: center;
+    align-items: ${({ $align }) => $align};
+    text-align: ${({ $align }) => $align};
     padding: 10px;
     color: ${({ theme }) => theme.colors.textColor};   
     background-color: ${({ theme }) => theme.colors.backgroundRowTable};

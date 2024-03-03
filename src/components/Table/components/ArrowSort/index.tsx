@@ -12,11 +12,12 @@ interface ArrowSortProps {
     order: "ASC" | "DESC" | "";
   };
   column: string;
+  click: () => void;
 }
 
-const ArrowSort: React.FC<ArrowSortProps> = ({ ordination, column }) => {
+const ArrowSort: React.FC<ArrowSortProps> = ({ ordination, column, click }) => {
   return (
-    <ArrowButton>
+    <ArrowButton onClick={click}>
       {ordination.column === column ? (
         ordination.order === "ASC" ? (
           <FaLongArrowAltDown color="#6298fc" />
