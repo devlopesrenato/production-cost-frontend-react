@@ -34,7 +34,12 @@ type Search = {
   value: string;
 }[];
 
-const Table: React.FC<TableProps> = ({ columns, dataSource, loading, title }) => {
+const Table: React.FC<TableProps> = ({
+  columns,
+  dataSource,
+  loading,
+  title,
+}) => {
   const [processedData, setProcessedData] = useState<any[]>([]);
   const [ordination, setOrdination] = useState<Ordination>({
     column: "",
@@ -53,7 +58,10 @@ const Table: React.FC<TableProps> = ({ columns, dataSource, loading, title }) =>
       let filteredData = data;
       for (const item of searching) {
         filteredData = filteredData.filter((row) => {
-          const value = row[item.column];
+          const hasRender = columns.find(({ key }) => key === item.column);
+          const value = hasRender?.render
+            ? hasRender.render(row, row[item.column])
+            : row[item.column];
           const valueCompare = item.value;
           return String(value)
             ?.toLowerCase()

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const STableContainer = styled.div`
     max-width: 95vw;
-    min-width: 430px;
+    min-width: 250px;
 `
 
 const STableTitle = styled.div`
