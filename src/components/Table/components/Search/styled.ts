@@ -20,6 +20,7 @@ const DropDown = styled.div`
     border: 1px solid #97979770;
     gap: 10px;
     top: 40px;
+    z-index: 1;
 `
 
 const AreaSearch = styled.div`
