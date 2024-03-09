@@ -5,6 +5,11 @@ const Header = styled.div`
     display: flex;  
     flex-direction: row-reverse;  
     width: 100%;
+    align-items: center;
+    position: fixed;
+    height: 40px;
+    padding: 0 10px;
+    background-color: #001529;
 `
 const Container = styled.div`
     display: flex;

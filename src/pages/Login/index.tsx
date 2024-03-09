@@ -53,56 +53,62 @@ const Login = () => {
   };
 
   return (
-    <Global.Page>
+    <>
       <Header>
         <SwitchTheme />
       </Header>
-      <Container>
-        <Logo src={`/logo-${theme}.png`} alt="Logotipo Production Cost" />
-        <Title>Login</Title>
-        <Form
-          form={form}
-          name="formLogin"
-          initialValues={{ remember: true }}
-          autoComplete="off"
-          layout="vertical"
-          onFinish={handleLogin}
-          disabled={loading}
-          style={{
-            width: "100%",
-            maxWidth: "300px",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Form.Item
-            name="user"
-            label="User"
-            rules={[{ required: true, message: "Please input your username!" }]}
+      <Global.Page>
+        <Container>
+          <Logo src={`/logo-${theme}.png`} alt="Logotipo Production Cost" />
+          <Title>Login</Title>
+          <Form
+            form={form}
+            name="formLogin"
+            initialValues={{ remember: true }}
+            autoComplete="off"
+            layout="vertical"
+            onFinish={handleLogin}
+            disabled={loading}
+            style={{
+              width: "100%",
+              maxWidth: "300px",
+              display: "flex",
+              flexDirection: "column",
+            }}
           >
-            <Input placeholder="Enter your username" />
-          </Form.Item>
+            <Form.Item
+              name="user"
+              label="User"
+              rules={[
+                { required: true, message: "Please input your username!" },
+              ]}
+            >
+              <Input placeholder="Enter your username" />
+            </Form.Item>
 
-          <Form.Item
-            name="password"
-            label="Password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-          >
-            <Input.Password
-              placeholder="Type your password"
-              visibilityToggle={{
-                visible: showPassword,
-                onVisibleChange: setShowPassword,
-              }}
-            />
-          </Form.Item>
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                { required: true, message: "Please input your password!" },
+              ]}
+            >
+              <Input.Password
+                placeholder="Type your password"
+                visibilityToggle={{
+                  visible: showPassword,
+                  onVisibleChange: setShowPassword,
+                }}
+              />
+            </Form.Item>
 
-          <Button loading={loading} htmlType="submit">
-            Login
-          </Button>
-        </Form>
-      </Container>
-    </Global.Page>
+            <Button loading={loading} htmlType="submit">
+              Login
+            </Button>
+          </Form>
+        </Container>
+      </Global.Page>
+    </>
   );
 };
 
