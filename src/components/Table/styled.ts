@@ -61,7 +61,7 @@ const STHeaderCellContent = styled.div<{ $align: string | undefined }>`
 
 const STBody = styled.tbody<{ $hasData?: "true" | "false", $width: number }>`
     background-color: ${({ theme }) => theme.colors.backgroundHeadTable};
-    min-height: ${({ $hasData }) => $hasData === "true" ? '300px' : '100px'};
+    min-height: ${({ $hasData }) => $hasData === "true" ? '10px' : '100px'};
     min-width: ${({ $width }) => $width}px;
 `
 
@@ -91,7 +91,7 @@ const NoData = styled.td`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 60%;
+    top: 70%;
     left: 50%; 
     margin: -28.5px;
     svg {

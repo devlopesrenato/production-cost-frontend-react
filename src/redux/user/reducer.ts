@@ -1,3 +1,4 @@
+import { setToken, setUserData } from "../../services/cookies";
 import UserActionTypes from "./actions-types";
 import Cookies from 'universal-cookie';
 
@@ -7,20 +8,14 @@ const initialState = {
     currentUser: cookies.get("@costprd:userData"),
 }
 
-type User = {
-    id: string;
-    name: string;
-    token: string;
-
-}
 interface UserAction {
     type: string;
     payload: User
 }
 
 function setCookies(payload: User) {
-    cookies.set("@costprd:userData", JSON.stringify({ ...payload, token: undefined }), { maxAge: 999990, path: '/' });
-    cookies.set('@costprd:token', payload.token, { maxAge: 999990, path: '/' });
+    setToken(payload.token)
+    setUserData({ ...payload, token: undefined })
 }
 
 const userReducer = (state = initialState, action: UserAction) => {
@@ -31,8 +26,8 @@ const userReducer = (state = initialState, action: UserAction) => {
         }
 
         case UserActionTypes.LOGOUT: {
-            cookies.set("@costprd:userData", null, { maxAge: 0 });
-            cookies.set("@costprd:token", null, { maxAge: 0 });
+            setToken()
+            setUserData()
             return { ...state, currentUser: null }
         }
 

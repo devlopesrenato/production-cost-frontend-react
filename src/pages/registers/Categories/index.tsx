@@ -5,7 +5,7 @@ import Table from "../../../components/Table";
 import { ModalAdd } from "./components/ModalAdd";
 import { Global } from "./styled";
 import { ModalUpdate } from "./components/ModalUpdate";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { openNotification } from "../../../redux/notification/actions";
 import Confirm from "../../../components/Confirm";
 
@@ -17,6 +17,7 @@ const Categories = () => {
     {} as CategoryType
   );
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.userReducer.currentUser);
 
   async function loadData() {
     setLoading(true);
@@ -35,7 +36,7 @@ const Categories = () => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [user]);
 
   async function deleteItem(data: CategoryType) {
     const result = await deleteCategory(data.uuid);

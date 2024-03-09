@@ -1,8 +1,7 @@
 import axios from 'axios';
-import Cookies from 'universal-cookie';
+import { getToken } from './cookies';
 
-const cookies = new Cookies();
-const token = cookies.get('@costprd:token');
+const token = getToken()
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || "https://api-custodeproducao.onrender.com/",

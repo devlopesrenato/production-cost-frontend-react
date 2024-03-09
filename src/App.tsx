@@ -10,6 +10,8 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyles, { Description, Message } from "./styles/globalStyles";
 import themes from "./styles/themes";
 import { Menu } from "./components/Menu";
+import verifyToken from "./services/verifyToken";
+import { logout } from "./redux/user/actions";
 
 interface NotificationProps {
   title: string;
@@ -23,6 +25,14 @@ const App = () => {
   const notificationData = useAppSelector((state) => state.notificationReducer);
   const notificationDuration = 5000;
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    verifyToken().then((result) => {
+      if (!result) {
+        dispatch(logout());
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (notificationData?.message?.length) {

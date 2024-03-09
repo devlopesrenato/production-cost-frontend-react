@@ -6,7 +6,7 @@ export default {
         backgroundHeadTable: '#e0e0e0',
         backgroundHoverHeadTable: '#a1a1a1',
         backgroundRowTable: '#FFFFFF',
-        backgroundHoverRowTable: '#e1e1e1',
+        backgroundHoverRowTable: '#c6c6c6',
         borderTable: '#28282854',
         button: '#e0e0e0',
         buttonHover: '#FFFFFF',
