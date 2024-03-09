@@ -1,13 +1,18 @@
-import { HiPresentationChartBar } from "react-icons/hi";
 import { CiLogout } from "react-icons/ci";
-import pageName, { getSystemPageNames } from "./pageName";
-import systemInfo from "../../../../package.json";
+import { HiPresentationChartBar } from "react-icons/hi";
+import { LuPackageCheck } from "react-icons/lu";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
+
+import systemInfo from "../../../../package.json";
+import pageName, { getSystemPageNames } from "./pageName";
+
 import Categories from "../../../pages/registers/Categories";
 import Home from "../../../pages/Home";
 import CustomMeasurements from "../../../pages/registers/CustomMeasurements";
 import Feedstock from "../../../pages/registers/Feedstock";
 import OtherCosts from "../../../pages/registers/OtherCosts";
+import Productions from "../../../pages/Productions";
+
 
 interface MenuItemRoute {
   element?: JSX.Element;
@@ -59,6 +64,12 @@ const menuItems: MenuItemRoute[] = [
         element: <OtherCosts />,
       },
     ],
+  },
+  {
+    key: "productions",
+    label: pageName("productions"),
+    icon: <LuPackageCheck />,
+    element: <Productions />,
   },
   {
     key: "logout",

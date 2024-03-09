@@ -2,6 +2,7 @@ export const pageNames = {
     "": "Home",
     "home": "Home",
     "registers": "Registers",
+    "productions": "Productions",
     "registers/categories": "Categories",
     "registers/custom-measurements": "Custom Measurements",
     "registers/feedstocks": "Feedstocks",
