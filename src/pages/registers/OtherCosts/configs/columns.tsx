@@ -26,7 +26,7 @@ const columns: ColumnsType[] = [
     width: 150,
     sort: true,
     search: true,
-    render: (_, value) => (value === "manuel" ? "Manual" : "Distributed"),
+    searchType: "select",
   },
   {
     title: "Price",

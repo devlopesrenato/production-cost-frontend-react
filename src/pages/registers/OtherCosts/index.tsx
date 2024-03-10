@@ -23,7 +23,11 @@ const OtherCosts = () => {
     try {
       const result = await getOtherCosts();
       if (result.status === 200) {
-        setData(result.data);
+        const data = result.data.map((item: OtherCostType) => ({
+          ...item,
+          type: item.type === "manual" ? "Manual" : "Distributed",
+        }));
+        setData(data);
         return;
       }
     } catch (error) {

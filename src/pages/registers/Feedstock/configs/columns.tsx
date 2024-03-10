@@ -26,6 +26,7 @@ const columns: ColumnsType[] = [
     width: 200,
     sort: true,
     search: true,
+    searchType: "select"
   },
   {
     title: "Price",

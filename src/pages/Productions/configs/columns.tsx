@@ -18,7 +18,7 @@ const columns: ColumnsType[] = [
     width: 100,
     sort: true,
     search: true,
-    render: (record) => `${record.cost.toFixed(2)}`,
+    render: (record) => `$${record.cost.toFixed(2)}`,
   },
   {
     title: "Price",
@@ -28,7 +28,7 @@ const columns: ColumnsType[] = [
     width: 100,
     sort: true,
     search: true,
-    render: (record) => `${record.price.toFixed(2)}`,
+    render: (record) => `$${record.price.toFixed(2)}`,
   },
   {
     title: "Profit",
@@ -38,7 +38,7 @@ const columns: ColumnsType[] = [
     width: 120,
     sort: true,
     search: true,
-    render: (record) => `${record.profit.toFixed(2)}`,
+    render: (record) => `$${record.profit.toFixed(2)}`,
   },
   {
     title: "Percent",
@@ -48,7 +48,7 @@ const columns: ColumnsType[] = [
     width: 120,
     sort: true,
     search: true,
-    render: (record) => `${record.percent.toFixed(2)}`,
+    render: (record) => `${record.percent.toFixed(2)}%`,
   },
   {
     title: "Category",
@@ -58,6 +58,7 @@ const columns: ColumnsType[] = [
     width: 150,
     sort: true,
     search: true,
+    searchType: "select"
   },
   {
     title: "Created by",
@@ -67,6 +68,7 @@ const columns: ColumnsType[] = [
     width: 150,
     sort: true,
     search: true,
+    searchType: "select"
   },
   {
     title: "Created at",
