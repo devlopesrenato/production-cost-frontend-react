@@ -32,6 +32,17 @@ export const createProduction = async (data: ProductionDto) => {
     return response;
 };
 
+export const duplicateProduction = async (uuid: string, name?: string) => {
+    const response = await api({
+        method: "POST",
+        url: 'production/duplicate/' + uuid,
+        data: {
+            name
+        }
+    });
+    return response;
+};
+
 export const updateProduction = async (uuid: string, data: ProductionDto) => {
     const response = await api({
         method: "PUT",

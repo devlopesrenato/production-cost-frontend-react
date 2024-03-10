@@ -7,7 +7,11 @@ import Confirm from "../../components/Confirm";
 import columns from "./configs/columns";
 import { ModalAdd } from "./components/ModalAdd";
 import { ModalUpdate } from "./components/ModalUpdate";
-import { deleteProduction, getProductions } from "./services";
+import {
+  deleteProduction,
+  duplicateProduction,
+  getProductions,
+} from "./services";
 
 const Productions = () => {
   const [data, setData] = useState<ProductionType[]>([]);
@@ -55,6 +59,26 @@ const Productions = () => {
 
   const _columns: ColumnsType[] = [
     ...columns,
+    {
+      title: "",
+      dataIndex: "duplicate",
+      key: "duplicate",
+      align: "center",
+      fixed: "right",
+      width: 80,
+      render: (data) => (
+        <Global.ButtonEdit
+          onClick={async () => {
+            setLoading(true);
+            await duplicateProduction(data.uuid);
+            await loadData();
+            setLoading(false);
+          }}
+        >
+          Duplicate
+        </Global.ButtonEdit>
+      ),
+    },
     {
       title: "",
       dataIndex: "edit",
