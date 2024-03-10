@@ -7,5 +7,6 @@ type ColumnsType = {
     fixed?: "left" | "right";
     width?: string | number;
     search?: boolean;
+    searchType?: "select" | "text"
     render?: (record?: any, value?: any) => JSX.Element | string | number | boolean;
 }

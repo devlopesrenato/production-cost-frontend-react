@@ -16,6 +16,7 @@ import ArrowSort from "./components/ArrowSort";
 import Search from "./components/Search";
 import { Loading } from "../Loading";
 import { RiArchive2Line } from "react-icons/ri";
+import SearchSelect from "./components/SearchSelect";
 
 interface TableProps {
   columns: ColumnsType[];
@@ -29,9 +30,10 @@ interface Ordination {
   order: "ASC" | "DESC" | "";
 }
 
-type Search = {
+type SearchProps = {
   column: string;
   value: string;
+  exactly?: boolean;
 }[];
 
 const Table: React.FC<TableProps> = ({
@@ -45,7 +47,7 @@ const Table: React.FC<TableProps> = ({
     column: "",
     order: "ASC",
   });
-  const [searching, setSearching] = useState<Search>([]);
+  const [searching, setSearching] = useState<SearchProps>([]);
 
   function processData() {
     const searchingData = searchData(dataSource);
@@ -63,6 +65,9 @@ const Table: React.FC<TableProps> = ({
             ? hasRender.render(row, row[item.column])
             : row[item.column];
           const valueCompare = item.value;
+          if (item.exactly) {
+            return String(value) === String(valueCompare);
+          }
           return String(value)
             ?.toLowerCase()
             .trim()
@@ -108,11 +113,15 @@ const Table: React.FC<TableProps> = ({
     }
   }
 
-  function handleSearching(data: { column: string; value: string }) {
+  function handleSearching(data: {
+    column: string;
+    value: string;
+    exactly?: boolean;
+  }) {
     setSearching((prev) => {
-      const curColumn = data.value !== "" ? [data] : [];
-      const newData = prev.filter(({ column }) => column !== data.column);
-      return [...newData, ...curColumn];
+      const currentColumn = data.value !== "" ? [data] : [];
+      const otherColumns = prev.filter(({ column }) => column !== data.column);
+      return [...otherColumns, ...currentColumn];
     });
   }
 
@@ -172,12 +181,22 @@ const Table: React.FC<TableProps> = ({
                       {column.title}
                     </STHeaderCellContent>
                     {column.search ? (
-                      <Search
-                        column={column.dataIndex}
-                        search={searching}
-                        click={handleSearching}
-                        clearall={() => setSearching([])}
-                      />
+                      column.searchType === "select" ? (
+                        <SearchSelect
+                          column={column.dataIndex}
+                          search={searching}
+                          click={handleSearching}
+                          clearall={() => setSearching([])}
+                          datasource={dataSource}
+                        />
+                      ) : (
+                        <Search
+                          column={column.dataIndex}
+                          search={searching}
+                          click={handleSearching}
+                          clearall={() => setSearching([])}
+                        />
+                      )
                     ) : (
                       <></>
                     )}
