@@ -5,7 +5,7 @@ type OtherCostType = {
     quantity: number;
     price: number;
     active: boolean;
-    type: "manuel" | "distributed";
+    type: "manual" | "distributed";
     createById: string;
     createBy: string;
     createDate: string;
