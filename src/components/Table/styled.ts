@@ -78,8 +78,8 @@ const STRow = styled.tr`
 
 const STCell = styled.td<{ $align: string | undefined }>`
     display: flex;
-    justify-content: ${({ $align }) => $align};
-    align-items: ${({ $align }) => $align};
+    justify-content: ${({ $align }) => $align};    
+    align-items: center;
     text-align: ${({ $align }) => $align};
     padding: 10px;
     color: ${({ theme }) => theme.colors.textColor};   
