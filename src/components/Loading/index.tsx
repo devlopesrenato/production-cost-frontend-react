@@ -1,6 +1,6 @@
 import React from "react";
-import { LuRefreshCw } from "react-icons/lu";
 import { SLoading, SLoadingSpinner, SLoadingContent } from "./styled";
+import { AiOutlineLoading } from "react-icons/ai";
 
 interface LoadingProps {
   backColor?: string;
@@ -18,7 +18,7 @@ export const Loading: React.FC<LoadingProps> = ({
       {loading ? (
         <div>
           <SLoadingSpinner>
-            <LuRefreshCw id="svg-loading" />
+            <AiOutlineLoading id="svg-loading" />
           </SLoadingSpinner>
         </div>
       ) : (
