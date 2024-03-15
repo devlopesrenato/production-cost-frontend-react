@@ -23,6 +23,14 @@ export const getCategories = async () => {
     return response;
 };
 
+export const getProfitMarginParameter = async () => {
+    const response = await api({
+        method: "GET",
+        url: 'parameters/1',
+    });
+    return response;
+};
+
 export const createProduction = async (data: ProductionDto) => {
     const response = await api({
         method: "POST",

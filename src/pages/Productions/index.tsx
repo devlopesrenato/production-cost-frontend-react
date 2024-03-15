@@ -11,12 +11,16 @@ import {
   deleteProduction,
   duplicateProduction,
   getProductions,
+  getProfitMarginParameter,
 } from "./services";
+import PopConfirm from "../../components/PopConfirm";
+import { GrDuplicate } from "react-icons/gr";
 
 const Productions = () => {
   const [data, setData] = useState<ProductionType[]>([]);
   const [loading, setLoading] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [profitMargin, setProfitMargin] = useState(100);
   const [dataEditing, setDateEditing] = useState<ProductionType>(
     {} as ProductionType
   );
@@ -26,6 +30,10 @@ const Productions = () => {
   async function loadData() {
     setLoading(true);
     try {
+      const profitMarginResult = await getProfitMarginParameter();
+      if (profitMarginResult.status === 200) {
+        setProfitMargin(profitMarginResult.data.value);
+      }
       const result = await getProductions();
       if (result.status === 200) {
         setData(result.data);
@@ -58,27 +66,26 @@ const Productions = () => {
   }
 
   const _columns: ColumnsType[] = [
-    ...columns,
     {
       title: "",
-      dataIndex: "duplicate",
+      dataIndex: "",
       key: "duplicate",
-      align: "center",
-      fixed: "right",
-      width: 80,
-      render: (data) => (
-        <Global.ButtonEdit
-          onClick={async () => {
-            setLoading(true);
-            await duplicateProduction(data.uuid);
+      width: 35,
+      render: (_) => (
+        <PopConfirm
+          title="Duplicate"
+          content={_.name + "?"}
+          type="warn"
+          ok={async () => {
+            await duplicateProduction(_.uuid);
             await loadData();
-            setLoading(false);
           }}
         >
-          Duplicate
-        </Global.ButtonEdit>
+          <GrDuplicate color="#1677ff" />
+        </PopConfirm>
       ),
     },
+    ...columns(profitMargin),
     {
       title: "",
       dataIndex: "edit",
