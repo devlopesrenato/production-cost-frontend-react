@@ -11,10 +11,11 @@ import {
   deleteProduction,
   duplicateProduction,
   getProductions,
-  getProfitMarginParameter,
+  getParameters,
 } from "./services";
 import PopConfirm from "../../components/PopConfirm";
 import { GrDuplicate } from "react-icons/gr";
+import ParameterActionTypes from "../../redux/parameters/actions-types";
 
 const Productions = () => {
   const [data, setData] = useState<ProductionType[]>([]);
@@ -30,9 +31,13 @@ const Productions = () => {
   async function loadData() {
     setLoading(true);
     try {
-      const profitMarginResult = await getProfitMarginParameter();
+      const profitMarginResult = await getParameters();
       if (profitMarginResult.status === 200) {
         setProfitMargin(profitMarginResult.data.value);
+        dispatch({
+          type: ParameterActionTypes.SET_PARAM,
+          payload: profitMarginResult.data
+        });
       }
       const result = await getProductions();
       if (result.status === 200) {

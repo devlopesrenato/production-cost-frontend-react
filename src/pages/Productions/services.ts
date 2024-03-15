@@ -23,10 +23,10 @@ export const getCategories = async () => {
     return response;
 };
 
-export const getProfitMarginParameter = async () => {
+export const getParameters = async () => {
     const response = await api({
         method: "GET",
-        url: 'parameters/1',
+        url: 'parameters',
     });
     return response;
 };
