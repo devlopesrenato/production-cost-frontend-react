@@ -3,6 +3,7 @@ export default {
         background: '#f0f0f0',
         backgroundGray: '#727272',
         textColor: '#282828',
+        textColorOpaque: '#282828bd',
         backgroundHeadTable: '#e0e0e0',
         backgroundHoverHeadTable: '#a1a1a1',
         backgroundRowTable: '#FFFFFF',
