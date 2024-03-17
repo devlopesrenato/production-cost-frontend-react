@@ -23,7 +23,7 @@ const SLoading = styled.div`
   animation: ${fadeIn} 0.3s ease-in;
 `
 
-const SLoadingSpinner = styled.div`
+const SLoadingSpinner = styled.div<{ $size: number }>`
   position: absolute;
   top: 0;
   inset-inline-start: 0;
@@ -37,7 +37,7 @@ const SLoadingSpinner = styled.div`
     top: 50%;
     inset-inline-start: 50%;
     margin: -10px; 
-    font-size: 35px;
+    font-size: ${({ $size }) => $size + 'px'};
     color: ${({ theme }) => theme.colors.textColor};
     animation: ${rotate} 0.9s linear infinite;    
   }
