@@ -8,5 +8,7 @@ type ColumnsType = {
     width?: string | number;
     search?: boolean;
     searchType?: "select" | "text"
+    editable?: boolean;
+    savingEdit?: (record: any, value: string) => Promise<any> | any
     render?: (record?: any, value?: any) => JSX.Element | string | number | boolean;
 }

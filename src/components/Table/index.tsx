@@ -17,12 +17,14 @@ import Search from "./components/Search";
 import { Loading } from "../Loading";
 import { RiArchive2Line } from "react-icons/ri";
 import SearchSelect from "./components/SearchSelect";
+import Cell from "./components/Cell";
 
 interface TableProps {
   columns: ColumnsType[];
   dataSource: any[];
   loading?: boolean;
   title?: JSX.Element | string | number;
+  maxHeight?: number
 }
 
 interface Ordination {
@@ -39,8 +41,9 @@ type SearchProps = {
 const Table: React.FC<TableProps> = ({
   columns,
   dataSource,
-  loading,
+  loading = false,
   title,
+  maxHeight
 }) => {
   const [processedData, setProcessedData] = useState<any[]>([]);
   const [ordination, setOrdination] = useState<Ordination>({
@@ -141,10 +144,11 @@ const Table: React.FC<TableProps> = ({
     const fixedStart = isFirst
       ? -1
       : before?.fixed
-      ? Number(width) - 2
-      : undefined;
+        ? Number(width) - 2
+        : undefined;
     return {
-      width,
+      width: '100%',
+      minWidth: width,
       position: colStyle.fixed ? "sticky" : undefined,
       right: colStyle.fixed === "right" ? fixedEnd : undefined,
       left: colStyle.fixed === "left" ? fixedStart : undefined,
@@ -163,6 +167,7 @@ const Table: React.FC<TableProps> = ({
           $overflowY="auto"
           $overflowX="auto"
           $hasData={!!processedData.length ? "true" : "false"}
+          $maxHeight={maxHeight}
         >
           <STHead $width={minWidth}>
             <STHeadRow>
@@ -170,7 +175,7 @@ const Table: React.FC<TableProps> = ({
                 const sort =
                   column.sort && !loading
                     ? () => handleOrdination(column.dataIndex)
-                    : () => {};
+                    : () => { };
                 return (
                   <STHeaderCell
                     $hover={column.sort ? "true" : "false"}
@@ -230,9 +235,15 @@ const Table: React.FC<TableProps> = ({
                         style={cellStyles(column, index)}
                         $align={column.align}
                       >
-                        {fnRender
-                          ? fnRender(data, data[column.dataIndex])
-                          : data[column.dataIndex]}
+                        <Cell
+                          value={
+                            fnRender
+                              ? fnRender(data, data[column.dataIndex])
+                              : data[column.dataIndex]
+                          }
+                          editable={column.editable}
+                          onSave={(newValue) => column.savingEdit && column.savingEdit(data, newValue)}
+                        />
                       </STCell>
                     );
                   })}

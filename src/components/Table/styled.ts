@@ -9,7 +9,7 @@ const STableTitle = styled.div`
     width: 100%;
 `
 
-const STable = styled.table<{ $hasData?: "true" | "false", $overflowY?: "auto" | "hidden", $overflowX?: "auto" | "hidden" }>`
+const STable = styled.table<{ $hasData?: "true" | "false", $overflowY?: "auto" | "hidden", $overflowX?: "auto" | "hidden", $maxHeight?: number }>`
     table-layout: fixed;
     text-align: start;
     border-radius: 8px 8px 0 0;
@@ -19,7 +19,7 @@ const STable = styled.table<{ $hasData?: "true" | "false", $overflowY?: "auto" |
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-height: calc(100vh - 180px);
+    max-height: ${({ $maxHeight }) => $maxHeight ? $maxHeight + 'px' : 'calc(100vh - 180px)'};
     min-height: ${({ $hasData }) => $hasData === "true" ? '300px' : '100px'};
     overflow-y: ${({ $overflowY }) => $overflowY};
     overflow-x: ${({ $overflowX }) => $overflowX};
