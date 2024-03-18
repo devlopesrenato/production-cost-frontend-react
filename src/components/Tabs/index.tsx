@@ -19,7 +19,7 @@ const Tabs: React.FC<TabsProps> = ({ defaultActiveKey, items = [] }) => {
                 <STabsAreaList>
                     {
                         items.map(({ label, key }, index) =>
-                            <SButton active={String(active === index)}
+                            <SButton $active={String(active === index)}
                                 key={key}
                                 onClick={() => setActive(index)}
                             >

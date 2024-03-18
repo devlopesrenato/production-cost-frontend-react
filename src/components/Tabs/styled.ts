@@ -36,23 +36,23 @@ const STabsAreaList = styled.div`
     }
 `
 
-const SButton = styled.button<{ active?: string }>`
+const SButton = styled.button<{ $active?: string }>`
     outline: 0;
     padding: 10px 15px;
     border-radius: 10px 10px 0 0;
     border: ${({ theme }) => '1px solid ' + theme.colors.backgroundGray};
-    border-bottom-color: ${({ active, theme }) =>
-        active === "true"
+    border-bottom-color: ${({ $active, theme }) =>
+        $active === "true"
             ? theme.colors.bgModal
             : 'none'
     };
-    color: ${({ theme, active }) =>
-        active === "true"
-            ? theme.colors.textColor
+    color: ${({ theme, $active }) =>
+        $active === "true"
+            ? '#1677ff'
             : theme.colors.textColorOpaque
     };
-    background-color: ${({ theme, active }) =>
-        active === "true"
+    background-color: ${({ theme, $active }) =>
+        $active === "true"
             ? 'transparent'
             : theme.colors.backgroundGray
     };
