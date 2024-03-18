@@ -1,9 +1,8 @@
 import styled, { keyframes } from 'styled-components'
 
 
-const PopoverContent = styled.div<{ position: 'above' | 'below' }>`
+const PopoverContent = styled.div`
   position: absolute;
-  left: 0;
   z-index: 99999;
 `;
 
@@ -53,14 +52,14 @@ const Footer = styled.div`
     gap: 10px;
 `
 
-const Button = styled.button<{ bgcolor?: string }>`
+const Button = styled.button<{ $bgcolor?: string }>`
     display: flex;
     gap: 5px;
     padding:  3px 8px;
     border-radius: 5px;
     border: 1px solid #a1a1a1;
-    background-color: ${({ bgcolor }) => bgcolor || '#FFFF'};
-    color: ${({ bgcolor }) => bgcolor ? "#FFFF" : "#000"};
+    background-color: ${({ $bgcolor }) => $bgcolor || '#FFFF'};
+    color: ${({ $bgcolor }) => $bgcolor ? "#FFFF" : "#000"};
     &:hover {
         cursor: pointer;
         border: 1px solid blue;

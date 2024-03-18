@@ -22,7 +22,7 @@ interface PopConfirmProps {
   content?: string;
   type?: "success" | "info" | "warn" | "error";
   icon?: JSX.Element;
-  ok?: () => Promise<void>;
+  ok?: () => Promise<any>;
   children: ReactElement;
 }
 
@@ -35,22 +35,10 @@ const PopConfirm: React.FC<PopConfirmProps> = ({
   children,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [position, setPosition] = useState<"above" | "below">("below");
   const [loading, setLoading] = useState<boolean>(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const popConfirmRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (buttonRef.current) {
-      const { top } = buttonRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      if (windowHeight - top < 250) {
-        setPosition("above");
-      } else {
-        setPosition("below");
-      }
-    }
-
     const handleOutsideClick = (event: MouseEvent) => {
       if (
         popConfirmRef.current &&
@@ -65,7 +53,7 @@ const PopConfirm: React.FC<PopConfirmProps> = ({
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [buttonRef]);
+  }, []);
 
   const IconShow =
     type === "error" ? (
@@ -80,8 +68,18 @@ const PopConfirm: React.FC<PopConfirmProps> = ({
 
   return (
     <>
+      {React.cloneElement(children, {
+        onClick: () => setOpen(!open),
+        style: {
+          cursor: "pointer",
+          transition: "background-color 0.3s",
+          ":hover": {
+            backgroundColor: "#f0f0f0",
+          },
+        },
+      })}
       {open && (
-        <PopoverContent ref={popConfirmRef} position={position}>
+        <PopoverContent ref={popConfirmRef}>
           <Main>
             <Top>
               <Icon> {icon ? icon : IconShow}</Icon>
@@ -101,7 +99,7 @@ const PopConfirm: React.FC<PopConfirmProps> = ({
               </Button>
               <Button
                 disabled={loading}
-                bgcolor="#1677ff"
+                $bgcolor="#1677ff"
                 onClick={async () => {
                   setLoading(true);
                   ok && (await ok());
@@ -121,17 +119,6 @@ const PopConfirm: React.FC<PopConfirmProps> = ({
           </Main>
         </PopoverContent>
       )}
-      {React.cloneElement(children, {
-        ref: buttonRef,
-        onClick: () => setOpen(!open),
-        style: {
-          cursor: "pointer",
-          transition: "background-color 0.3s",
-          ":hover": {
-            backgroundColor: "#f0f0f0",
-          },
-        },
-      })}
     </>
   );
 };
