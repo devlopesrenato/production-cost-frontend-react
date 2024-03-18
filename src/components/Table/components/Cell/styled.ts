@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const SInput = styled.input`
+    outline: 0;
     width: 100%;
 `
 

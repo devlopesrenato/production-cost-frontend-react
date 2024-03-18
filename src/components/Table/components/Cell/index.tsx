@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SInput, SSpan, SSpanInactive } from "./styled";
 import { Loading } from "../../../Loading";
 
@@ -13,6 +13,24 @@ const Cell: React.FC<CellProps> = ({ value, editable, onSave }) => {
     const [saving, setSaving] = useState(false);
     const [cellValue, setCellValue] = useState<string>(String(value));
 
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        const handleOutsideClick = (event: MouseEvent) => {
+            if (
+                inputRef.current &&
+                !inputRef.current.contains(event.target as Node)
+            ) {
+                handleSave('Enter');
+            }
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, []);
 
     function handleEdit() {
         if (editable) {
@@ -21,16 +39,16 @@ const Cell: React.FC<CellProps> = ({ value, editable, onSave }) => {
     }
 
     async function handleSave(key: string) {
-        if (key === 'Enter') {
-            try {
+        try {
+            if (key === 'Enter' && cellValue != value) {
                 setSaving(true)
                 onSave && await onSave(cellValue);
-                setEditing(false)
-            } catch (error) {
-                console.log('Error saving cell value: ', error)
-            } finally {
-                setSaving(false)
             }
+        } catch (error) {
+            console.log('Error saving cell value: ', error)
+        } finally {
+            setEditing(false)
+            setSaving(false)
         }
     }
 
@@ -39,6 +57,7 @@ const Cell: React.FC<CellProps> = ({ value, editable, onSave }) => {
             ? <Loading size={20} loading><SSpanInactive>{cellValue}</SSpanInactive></Loading>
             : editable && editing
                 ? <SInput
+                    ref={inputRef}
                     value={cellValue}
                     onChange={(e) => setCellValue(e.target.value)}
                     onKeyDown={(e) => handleSave(e.key)}
