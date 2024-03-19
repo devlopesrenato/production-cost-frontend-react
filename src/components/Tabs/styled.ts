@@ -15,7 +15,7 @@ const STabsArea = styled.div`
         position: absolute;
         right: 0;
         left: 0;
-        border-bottom: ${({ theme }) => '1px solid ' + theme.colors.backgroundGray};
+        border-bottom: ${({ theme }) => '1px solid ' + theme.colors.backgroundHeadTable};
         content: ' ';
     }
 `
@@ -40,7 +40,7 @@ const SButton = styled.button<{ $active?: string }>`
     outline: 0;
     padding: 10px 15px;
     border-radius: 10px 10px 0 0;
-    border: ${({ theme }) => '1px solid ' + theme.colors.backgroundGray};
+    border: ${({ theme }) => '1px solid ' + theme.colors.backgroundHeadTable};
     border-bottom-color: ${({ $active, theme }) =>
         $active === "true"
             ? theme.colors.bgModal
@@ -54,7 +54,7 @@ const SButton = styled.button<{ $active?: string }>`
     background-color: ${({ theme, $active }) =>
         $active === "true"
             ? 'transparent'
-            : theme.colors.backgroundGray
+            : theme.colors.backgroundHeadTable
     };
     &:hover {
         cursor: pointer;
