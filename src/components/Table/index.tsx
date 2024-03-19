@@ -10,7 +10,7 @@ import {
   STHeaderCellContent,
   STHeaderCell,
   NoData,
-  STableTitle,
+  STableExtra,
 } from "./styled";
 import ArrowSort from "./components/ArrowSort";
 import Search from "./components/Search";
@@ -24,6 +24,7 @@ interface TableProps {
   dataSource: any[];
   loading?: boolean;
   title?: JSX.Element | string | number;
+  footer?: JSX.Element | string | number;
   maxHeight?: number
 }
 
@@ -43,6 +44,7 @@ const Table: React.FC<TableProps> = ({
   dataSource,
   loading = false,
   title,
+  footer,
   maxHeight
 }) => {
   const [processedData, setProcessedData] = useState<any[]>([]);
@@ -162,7 +164,7 @@ const Table: React.FC<TableProps> = ({
   return (
     <Loading loading={loading}>
       <STableContainer>
-        <STableTitle>{title}</STableTitle>
+        <STableExtra>{title}</STableExtra>
         <STable
           $overflowY="auto"
           $overflowX="auto"
@@ -229,6 +231,9 @@ const Table: React.FC<TableProps> = ({
                 <STRow key={index}>
                   {columns.map((column, index) => {
                     const fnRender = column.render;
+                    const cellEditable = typeof column.editable === 'function'
+                      ? column.editable(data, data[column.dataIndex])
+                      : column.editable
                     return (
                       <STCell
                         key={index}
@@ -241,7 +246,9 @@ const Table: React.FC<TableProps> = ({
                               ? fnRender(data, data[column.dataIndex])
                               : data[column.dataIndex]
                           }
-                          editable={column.editable}
+                          editable={cellEditable}
+                          type={column.type}
+                          customRegex={column.cellValidateCustomRegex}
                           onSave={(newValue) => column.savingEdit && column.savingEdit(data, newValue)}
                         />
                       </STCell>
@@ -263,6 +270,7 @@ const Table: React.FC<TableProps> = ({
             )}
           </STBody>
         </STable>
+        <STableExtra>{footer}</STableExtra>
       </STableContainer>
     </Loading>
   );

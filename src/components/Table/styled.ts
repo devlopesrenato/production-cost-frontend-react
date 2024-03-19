@@ -5,7 +5,7 @@ const STableContainer = styled.div`
     min-width: 250px;
 `
 
-const STableTitle = styled.div`
+const STableExtra = styled.div`
     width: 100%;
 `
 
@@ -102,7 +102,7 @@ const NoData = styled.td`
 export {
     STableContainer,
     STable,
-    STableTitle,
+    STableExtra,
     STHead,
     STBody,
     STRow,
