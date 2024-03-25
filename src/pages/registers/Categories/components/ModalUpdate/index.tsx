@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Form, FormInstance, Input, Modal } from "antd";
+import { Form, FormInstance, Input } from "antd";
+import Modal from "../../../../../components/Modal";
 import { updateCategory } from "../../service";
 import { openNotification } from "../../../../../redux/notification/actions";
 import { useAppDispatch } from "../../../../../redux/hooks";
@@ -53,13 +54,11 @@ export const ModalUpdate: React.FC<ModalProps> = ({
   return (
     <>
       <Modal
-        zIndex={1002}
         title={`Edit ${data.name}`}
         open={open}
         onOk={handleOk}
         onCancel={close}
         confirmLoading={confirmLoading}
-        destroyOnClose
       >
         <Form
           name="Edit"

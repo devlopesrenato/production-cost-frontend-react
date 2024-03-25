@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Form, FormInstance, Input, Modal } from "antd";
+import { Form, FormInstance, Input } from "antd";
+import Modal from '../../../../../components/Modal'
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import { createCategory } from "../../service";
 import { openNotification } from "../../../../../redux/notification/actions";
@@ -29,7 +30,7 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
           const name = values.name;
           const result = await createCategory({
             name: name.trim(),
-          });        
+          });
           if (result.status === 201) {
             refresh();
             setOpen(false);
@@ -72,7 +73,6 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
         onClick={showModal}
       />
       <Modal
-        zIndex={1002}
         title="Add Category"
         open={open}
         onOk={handleOk}

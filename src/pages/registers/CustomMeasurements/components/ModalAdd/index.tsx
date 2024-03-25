@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Form, FormInstance, Input, InputNumber, Modal } from "antd";
+import { Form, FormInstance, Input, InputNumber } from "antd";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import { createCustomMeasurement, getUnitOfMeasurements } from "../../service";
 import { openNotification } from "../../../../../redux/notification/actions";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import Button from "../../../../../components/Button";
 import { Select } from "../../../../../components/Select";
+import Modal from "../../../../../components/Modal";
 
 interface ModalProps {
   refresh: () => void;
@@ -90,7 +91,6 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
         onClick={showModal}
       />
       <Modal
-        zIndex={1002}
         title="Add Custom Measurement"
         open={open}
         onOk={handleOk}
