@@ -7,7 +7,7 @@ import { Global } from "./styled";
 import { ModalUpdate } from "./components/ModalUpdate";
 import { useAppDispatch } from "../../../redux/hooks";
 import { openNotification } from "../../../redux/notification/actions";
-import Confirm from "../../../components/Confirm";
+import ModalConfirm from "../../../components/ModalConfirm";
 
 const Feedstock = () => {
   const [data, setData] = useState<FeedstockType[]>([]);
@@ -80,10 +80,11 @@ const Feedstock = () => {
       fixed: "right",
       width: 80,
       render: (data) => (
-        <Confirm
+        <ModalConfirm
+          type="warn"
           title="Are you sure you want to delete this feedstock?"
           message={data.name}
-          ok={() => deleteItem(data)}
+          onOk={() => deleteItem(data)}
           children={<Global.ButtonDelete>Delete</Global.ButtonDelete>}
         />
       ),

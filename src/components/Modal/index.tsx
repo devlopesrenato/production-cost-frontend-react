@@ -3,26 +3,47 @@ import { IoClose } from "react-icons/io5";
 import Spinner from "../Spinner";
 import {
     SModalBackMask,
-    SModal,
+    SModalMain,
     SModalContent,
     SModalCloseButton,
     SModalTitle,
     SModalFooter,
-    SModalButton
+    SModalButton,
+    SModal
 } from './styled'
+import ReactDOM from "react-dom";
 
 interface ModalProps {
     children?: ReactElement;
     buttonOpen?: ReactElement;
     open?: boolean;
+    confirmLoading?: boolean;
     title?: string;
     onOk?: () => (Promise<any> | any);
     onCancel?: () => (Promise<any> | any);
     width?: number | string;
-    top?: number | string;
+    top?: number | string | boolean;
+    maskClose?: boolean;
+    showIconClose?: boolean;
+    okText?: string;
+    cancelText?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ children, open, top, width, title = '', buttonOpen, onOk, onCancel }) => {
+const Modal: React.FC<ModalProps> = ({
+    children,
+    open,
+    confirmLoading,
+    top,
+    width,
+    title,
+    buttonOpen,
+    maskClose = true,
+    showIconClose = true,
+    onOk,
+    onCancel,
+    okText,
+    cancelText,
+}) => {
     const [openModal, setOpenModal] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -31,7 +52,7 @@ const Modal: React.FC<ModalProps> = ({ children, open, top, width, title = '', b
     };
 
     const handleCloseModal = async () => {
-        !loading && (
+        (!loading || !confirmLoading) && (
             onCancel &&
             await onCancel()
             || setOpenModal(false)
@@ -41,16 +62,16 @@ const Modal: React.FC<ModalProps> = ({ children, open, top, width, title = '', b
     const handleOk = async () => {
         setLoading(true)
         try {
-            !loading && onOk && await onOk();
+            (!loading || !confirmLoading) && onOk && await onOk();
             setOpenModal(false);
         } catch (error) {
             console.error(error)
         } finally {
-            !loading && setLoading(false)
+            (!loading || !confirmLoading) && setLoading(false)
         }
     }
 
-    function propSizeConvert(value: string | number | undefined) {
+    function propSizeConvert(value: string | number | boolean | undefined) {
         switch (typeof value) {
             case 'number':
                 return value + 'px'
@@ -58,52 +79,77 @@ const Modal: React.FC<ModalProps> = ({ children, open, top, width, title = '', b
             case 'string':
                 return value
 
+            case 'boolean':
+                return value === false
+                    ? 'none'
+                    : '100px'
+
             default:
                 return undefined;
         }
     }
+
     return <>
         {
             buttonOpen
-                ? React.cloneElement(buttonOpen, { onClick: handleOpenModal })
+                ? React.cloneElement(
+                    buttonOpen,
+                    {
+                        onClick: handleOpenModal,
+                        style: {
+                            cursor: "pointer",
+                        },
+                    })
                 : <></>
         }
-        <SModalBackMask
-            onClick={handleCloseModal}
-            $show={String(open || openModal)}
-        />
-        <SModal
-            $show={String(open || openModal)}
-            $top={propSizeConvert(top)}
-            $width={propSizeConvert(width)}
-        >
-            <SModalCloseButton
-                disabled={loading}
-                onClick={handleCloseModal}
-            >
-                <IoClose />
-            </SModalCloseButton>
-            <SModalTitle>{title}</SModalTitle>
-            <SModalContent>
-                {children}
-            </SModalContent>
-            <SModalFooter>
-                <SModalButton
-                    disabled={loading}
-                    onClick={handleCloseModal}
-                >
-                    Cancel
-                </SModalButton>
-                <SModalButton
-                    disabled={loading}
-                    onClick={handleOk}
-                    $type="primary"
-                >
-                    {loading ? <Spinner size={18} /> : <></>}
-                    OK
-                </SModalButton>
-            </SModalFooter>
-        </SModal>
+        {(open || openModal) &&
+            ReactDOM.createPortal(
+                <>
+                    <SModalBackMask
+                        $show={String(open || openModal)}
+                    />
+                    <SModal
+                        onClick={() => maskClose && handleCloseModal()}
+                        $show={String(open || openModal)}
+                    >
+                        <SModalMain
+                            $show={String(open || openModal)}
+                            $top={propSizeConvert(top)}
+                            $width={propSizeConvert(width)}
+                        >
+                            {showIconClose &&
+                                <SModalCloseButton
+                                    disabled={loading || confirmLoading}
+                                    onClick={handleCloseModal}
+                                >
+                                    <IoClose />
+                                </SModalCloseButton>
+                            }
+                            {title ? <SModalTitle>{title}</SModalTitle> : <></>}
+                            <SModalContent>
+                                {children}
+                            </SModalContent>
+                            <SModalFooter>
+                                <SModalButton
+                                    disabled={loading || confirmLoading}
+                                    onClick={handleCloseModal}
+                                >
+                                    {cancelText || 'Cancel'}
+                                </SModalButton>
+                                <SModalButton
+                                    disabled={loading || confirmLoading}
+                                    onClick={handleOk}
+                                    $type="primary"
+                                >
+                                    {(loading || confirmLoading) ? <Spinner size={18} /> : <></>}
+                                    {okText || 'OK'}
+                                </SModalButton>
+                            </SModalFooter>
+                        </SModalMain>
+                    </SModal>
+                </>,
+                document.body)
+        }
     </>
 }
 

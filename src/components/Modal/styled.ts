@@ -8,7 +8,16 @@ const SModalBackMask = styled.div<{ $show: string }>`
     z-index: 1010;
 `
 
-const SModal = styled.div<{ $show: string, $top?: string, $width?: string }>`    
+const SModal = styled.div<{ $show: string }>`
+    display: ${({ $show }) => $show === 'true' ? 'flex' : 'none'};
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    inset: 0;
+    z-index: 1010;
+`
+
+const SModalMain = styled.div<{ $show: string, $top?: string, $width?: string }>`    
     display: ${({ $show }) => $show === 'true' ? 'flex' : 'none'};    
     background-color: ${({ theme }) => theme.colors.bgModal};
     width: ${({ $width }) => $width || '500px'};
@@ -80,7 +89,7 @@ const SModalButton = styled.button<{ $type?: string }>`
     &:hover {
         border-color: #1677ff;
         color: ${({ $type }) => $type === 'primary' ? '#FFF' : '#1677ff'};
-        background-color: ${({ $type }) => $type === 'primary' ? '#1677ffd0' : '#FFFFFFd0'};
+        background-color: ${({ $type }) => $type === 'primary' ? '#1677ff5e' : '#FFFFFFd0'};
     }
     &:disabled {
         cursor: not-allowed;
@@ -93,6 +102,7 @@ const SModalButton = styled.button<{ $type?: string }>`
 export {
     SModalBackMask,
     SModal,
+    SModalMain,
     SModalContent,
     SModalCloseButton,
     SModalTitle,
