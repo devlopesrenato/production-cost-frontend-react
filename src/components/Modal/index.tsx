@@ -89,6 +89,15 @@ const Modal: React.FC<ModalProps> = ({
         }
     }
 
+    const handleModalClick = () => {
+        maskClose && handleCloseModal();
+    };
+
+    const handleMainClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        event.stopPropagation();
+    };
+
+
     return <>
         {
             buttonOpen
@@ -109,10 +118,11 @@ const Modal: React.FC<ModalProps> = ({
                         $show={String(open || openModal)}
                     />
                     <SModal
-                        onClick={() => maskClose && handleCloseModal()}
+                        onClick={handleModalClick}
                         $show={String(open || openModal)}
                     >
                         <SModalMain
+                            onClick={handleMainClick}
                             $show={String(open || openModal)}
                             $top={propSizeConvert(top)}
                             $width={propSizeConvert(width)}

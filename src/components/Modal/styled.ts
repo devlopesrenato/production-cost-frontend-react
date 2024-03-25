@@ -5,7 +5,7 @@ const SModalBackMask = styled.div<{ $show: string }>`
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.45);
-    z-index: 1010;
+    z-index: 1009;
 `
 
 const SModal = styled.div<{ $show: string }>`
@@ -25,7 +25,7 @@ const SModalMain = styled.div<{ $show: string, $top?: string, $width?: string }>
     flex-direction: column;
     position: fixed;
     max-width: calc(100vw - 16px);
-    z-index: 1011;
+    z-index: 1012;
     padding: 20px 24px;
     border-radius: 10px;    
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
