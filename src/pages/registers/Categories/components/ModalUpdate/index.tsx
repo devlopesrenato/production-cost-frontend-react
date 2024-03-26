@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Form, FormInstance, Input } from "antd";
+import { Form, FormInstance } from "antd";
 import Modal from "../../../../../components/Modal";
 import { updateCategory } from "../../service";
 import { openNotification } from "../../../../../redux/notification/actions";
 import { useAppDispatch } from "../../../../../redux/hooks";
+import { Input } from "../../../../../components/Input";
 
 interface ModalProps {
   refresh: () => void;
@@ -73,7 +74,7 @@ export const ModalUpdate: React.FC<ModalProps> = ({
             name="name"
             rules={[{ required: true, message: "Insira a descrição" }]}
           >
-            <Input />
+            <Input autoFocus />
           </Form.Item>
         </Form>
       </Modal>

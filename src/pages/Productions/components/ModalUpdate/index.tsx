@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Form, FormInstance, Input, InputNumber, Modal } from "antd";
+import { Form, FormInstance, InputNumber } from "antd";
 import { getCategories, updateProduction } from "../../services";
 import { openNotification } from "../../../../redux/notification/actions";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { Select } from "../../../../components/Select";
+import Modal from '../../../../components/Modal'
+import { Input } from "../../../../components/Input";
 
 interface ModalProps {
   refresh: () => void;
-  data: CategoryType;
+  data: ProductionType;
   open: boolean;
   close: () => void;
 }
@@ -28,7 +30,12 @@ export const ModalUpdate: React.FC<ModalProps> = ({
     formRef.current
       ?.validateFields()
       .then(async ({ name, categoryId, price, quantity }) => {
-        if (name.trim() !== data.name.trim() && name.trim() !== "") {
+        if (
+          (name.trim() !== data.name.trim() && name.trim() !== "") ||
+          categoryId !== data.categoryId ||
+          price !== data.price ||
+          quantity !== data.quantity
+        ) {
           const result = await updateProduction(data.uuid, {
             name: name.trim(),
             categoryId,
@@ -47,6 +54,15 @@ export const ModalUpdate: React.FC<ModalProps> = ({
               type: "warning",
             })
           );
+        } else {
+          dispatch(
+            openNotification({
+              title: "No changes",
+              message: " ",
+              type: "warning",
+            })
+          )
+          close && close();
         }
       })
       .catch((err) => {
@@ -74,13 +90,11 @@ export const ModalUpdate: React.FC<ModalProps> = ({
   return (
     <>
       <Modal
-        zIndex={1002}
         title={`Edit ${data.name}`}
         open={open}
         onOk={handleOk}
         onCancel={close}
         confirmLoading={confirmLoading}
-        destroyOnClose
       >
         <Form
           name="Edit"

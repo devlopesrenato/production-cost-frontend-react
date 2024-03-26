@@ -1,10 +1,12 @@
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Container, Logo, Global, Title, Header } from "./styled";
 import SwitchTheme from "../../components/SwitchTheme";
-import { Button, Form, Input } from "antd";
+import { Form } from "antd";
 import { useState } from "react";
 import { login } from "./service";
 import { setUser } from "../../redux/user/actions";
+import { Input, InputPassword } from "../../components/Input";
+import Button from "../../components/Button";
 
 interface LoginFields {
   user: string;
@@ -12,7 +14,6 @@ interface LoginFields {
 }
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { theme } = useAppSelector((state) => state.themeReducer);
   const [form] = Form.useForm();
@@ -93,18 +94,11 @@ const Login = () => {
                 { required: true, message: "Please input your password!" },
               ]}
             >
-              <Input.Password
+              <InputPassword
                 placeholder="Type your password"
-                visibilityToggle={{
-                  visible: showPassword,
-                  onVisibleChange: setShowPassword,
-                }}
               />
             </Form.Item>
-
-            <Button loading={loading} htmlType="submit">
-              Login
-            </Button>
+            <Button loading={loading} type="submit" title="Login" />
           </Form>
         </Container>
       </Global.Page>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Form, FormInstance, Input, InputNumber, Modal } from "antd";
+import { Form, FormInstance } from "antd";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import { createProduction, getCategories } from "../../services";
 import { openNotification } from "../../../../redux/notification/actions";
 import { useAppDispatch } from "../../../../redux/hooks";
 import Button from "../../../../components/Button";
 import { Select } from "../../../../components/Select";
+import Modal from "../../../../components/Modal";
+import { Input, InputNumber } from "../../../../components/Input";
 
 interface ModalProps {
   refresh: () => void;
@@ -90,7 +92,6 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
         onClick={showModal}
       />
       <Modal
-        zIndex={1002}
         title="Add Production"
         open={open}
         onOk={handleOk}
@@ -133,7 +134,7 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
               { required: true, message: "Enter a quantity per production" },
             ]}
           >
-            <InputNumber min={0} decimalSeparator="," />
+            <InputNumber min={0} />
           </Form.Item>
 
           <Form.Item
@@ -141,7 +142,7 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
             name="price"
             rules={[{ required: true, message: "Enter a price" }]}
           >
-            <InputNumber min={0} decimalSeparator="," prefix={"$"} />
+            <InputNumber min={0} prefix={"$"} />
           </Form.Item>
         </Form>
       </Modal>

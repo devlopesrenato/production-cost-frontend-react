@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Form, FormInstance, Input } from "antd";
+import { Form, FormInstance } from "antd";
 import Modal from '../../../../../components/Modal'
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import { createCategory } from "../../service";
 import { openNotification } from "../../../../../redux/notification/actions";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import Button from "../../../../../components/Button";
+import { Input } from "../../../../../components/Input";
 
 interface ModalProps {
   refresh: () => void;
@@ -92,7 +93,7 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
             name="name"
             rules={[{ required: true, message: "Enter a description" }]}
           >
-            <Input />
+            <Input autoFocus />
           </Form.Item>
         </Form>
       </Modal>

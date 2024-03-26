@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Form, FormInstance, Input, InputNumber } from "antd";
+import { Form, FormInstance } from "antd";
 import { getCustomMeasurements, updateFeedstock } from "../../service";
 import { openNotification } from "../../../../../redux/notification/actions";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { Select } from "../../../../../components/Select";
 import Modal from "../../../../../components/Modal";
+import { Input, InputNumber } from "../../../../../components/Input";
 
 interface ModalProps {
   refresh: () => void;
@@ -130,7 +131,7 @@ export const ModalUpdate: React.FC<ModalProps> = ({
             name="quantity"
             rules={[{ required: true, message: "Enter a quantity" }]}
           >
-            <InputNumber min={0} decimalSeparator="," />
+            <InputNumber min={0} />
           </Form.Item>
 
           <Form.Item
@@ -151,7 +152,7 @@ export const ModalUpdate: React.FC<ModalProps> = ({
             name="price"
             rules={[{ required: true, message: "Enter a price" }]}
           >
-            <InputNumber min={0} decimalSeparator="," />
+            <InputNumber min={0} />
           </Form.Item>
         </Form>
       </Modal>
