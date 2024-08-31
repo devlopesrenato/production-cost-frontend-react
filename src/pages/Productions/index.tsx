@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
+import { GrDuplicate } from "react-icons/gr";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import * as Global from "../../styles/globalStyles";
+import ParameterActionTypes from "../../redux/parameters/actions-types";
 import { openNotification } from "../../redux/notification/actions";
-import Table from "../../components/Table";
-import Confirm from "../../components/Confirm";
 import columns from "./configs/columns";
+import Table from "../../components/Table";
 import { ModalAdd } from "./components/ModalAdd";
 import { ModalUpdate } from "./components/ModalUpdate";
+import ModalConfirm from "../../components/ModalConfirm";
+import * as Global from "../../styles/globalStyles";
 import {
   deleteProduction,
   duplicateProduction,
   getProductions,
   getParameters,
 } from "./services";
-import PopConfirm from "../../components/PopConfirm";
-import { GrDuplicate } from "react-icons/gr";
-import ParameterActionTypes from "../../redux/parameters/actions-types";
 
 const Productions = () => {
   const [data, setData] = useState<ProductionType[]>([]);
@@ -36,7 +35,7 @@ const Productions = () => {
         setProfitMargin(profitMarginResult.data.value);
         dispatch({
           type: ParameterActionTypes.SET_PARAM,
-          payload: profitMarginResult.data
+          payload: profitMarginResult.data,
         });
       }
       const result = await getProductions();
@@ -77,17 +76,17 @@ const Productions = () => {
       key: "duplicate",
       width: 35,
       render: (_) => (
-        <PopConfirm
+        <ModalConfirm
           title="Duplicate"
-          content={_.name + "?"}
+          message={_.name + "?"}
           type="warn"
-          ok={async () => {
+          onOk={async () => {
             await duplicateProduction(_.uuid);
             await loadData();
           }}
         >
           <GrDuplicate color="#1677ff" />
-        </PopConfirm>
+        </ModalConfirm>
       ),
     },
     ...columns(profitMargin),
@@ -117,10 +116,11 @@ const Productions = () => {
       fixed: "right",
       width: 80,
       render: (data) => (
-        <Confirm
+        <ModalConfirm
+          type="warn"
           title="Are you sure you want to delete this production?"
           message={data.name}
-          ok={() => deleteItem(data)}
+          onOk={() => deleteItem(data)}
           children={<Global.ButtonDelete>Delete</Global.ButtonDelete>}
         />
       ),
