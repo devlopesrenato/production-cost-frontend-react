@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Form, FormInstance, InputNumber } from "antd";
+import { Form, FormInstance } from "antd";
 import { getCategories, updateProduction } from "../../services";
 import { openNotification } from "../../../../redux/notification/actions";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { Select } from "../../../../components/Select";
-import Modal from '../../../../components/Modal'
-import { Input } from "../../../../components/Input";
+import Modal from "../../../../components/Modal";
+import { Input, InputNumber } from "../../../../components/Input";
 
 interface ModalProps {
   refresh: () => void;
@@ -29,16 +29,18 @@ export const ModalUpdate: React.FC<ModalProps> = ({
     setConfirmLoading(true);
     formRef.current
       ?.validateFields()
-      .then(async ({ name, categoryId, price, quantity }) => {
+      .then(async ({ name, categoryId, price, marketPrice, quantity }) => {
         if (
           (name.trim() !== data.name.trim() && name.trim() !== "") ||
           categoryId !== data.categoryId ||
           price !== data.price ||
+          marketPrice !== data.marketPrice ||
           quantity !== data.quantity
         ) {
           const result = await updateProduction(data.uuid, {
             name: name.trim(),
             categoryId,
+            marketPrice,
             price,
             quantity,
           });
@@ -61,7 +63,7 @@ export const ModalUpdate: React.FC<ModalProps> = ({
               message: " ",
               type: "warning",
             })
-          )
+          );
           close && close();
         }
       })
@@ -132,7 +134,15 @@ export const ModalUpdate: React.FC<ModalProps> = ({
               { required: true, message: "Enter a quantity per production" },
             ]}
           >
-            <InputNumber min={0} decimalSeparator="," />
+            <InputNumber min={0} />
+          </Form.Item>
+
+          <Form.Item
+            label="Factory Price"
+            name="marketPrice"
+            rules={[{ required: true, message: "Enter a factory price" }]}
+          >
+            <InputNumber min={0} prefix={"$"} />
           </Form.Item>
 
           <Form.Item
@@ -140,7 +150,7 @@ export const ModalUpdate: React.FC<ModalProps> = ({
             name="price"
             rules={[{ required: true, message: "Enter a price" }]}
           >
-            <InputNumber min={0} decimalSeparator="," prefix={"$"} />
+            <InputNumber min={0} prefix={"$"} />
           </Form.Item>
         </Form>
       </Modal>

@@ -4,6 +4,7 @@ type ProductionDto = {
     name: string,
     categoryId: string,
     price: number,
+    marketPrice: number,
     quantity: number
 }
 

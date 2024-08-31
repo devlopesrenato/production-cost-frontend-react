@@ -30,11 +30,12 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
       ?.validateFields()
       .then(async (values) => {
         if (values.name.trim() !== "") {
-          const { name, categoryId, price, quantity } = values;
+          const { name, categoryId, price, marketPrice, quantity } = values;
           const result = await createProduction({
             name: name.trim(),
             categoryId,
             price,
+            marketPrice,
             quantity,
           });
           if (result.status === 201) {
@@ -134,7 +135,15 @@ export const ModalAdd: React.FC<ModalProps> = ({ refresh }) => {
               { required: true, message: "Enter a quantity per production" },
             ]}
           >
-            <InputNumber min={0} />
+            <InputNumber min={1} />
+          </Form.Item>
+
+          <Form.Item
+            label="Factory Price"
+            name="marketPrice"
+            rules={[{ required: true, message: "Enter a factory price" }]}
+          >
+            <InputNumber min={0} prefix={"$"} />
           </Form.Item>
 
           <Form.Item

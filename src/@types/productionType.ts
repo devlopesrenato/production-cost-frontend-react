@@ -2,6 +2,7 @@ type ProductionType = {
     uuid: string;
     name: string;
     price: number;
+    marketPrice: number;
     quantity: number;
     categoryId: string;
     category: string;
