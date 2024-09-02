@@ -1,6 +1,14 @@
-import { Select as SelectAnt, SelectProps as SelectPropsAnt } from "antd";
-import { useEffect, useState } from "react";
-const { Option } = SelectAnt;
+import React, { useState, useEffect, ChangeEvent } from "react";
+import {
+  Arrow,
+  DropdownMenu,
+  Option,
+  Options,
+  SearchInput,
+  SelectBox,
+  SelectedValue,
+  SSelect,
+} from "./styled";
 
 type SelectDataType = {
   key: string | number;
@@ -9,45 +17,69 @@ type SelectDataType = {
 
 interface SelectProps {
   data: SelectDataType[];
-  onChange?: (value: string) => void;
-  value?: string | number;
-  disabled?: boolean;
-  props?: SelectPropsAnt;
+  customPlaceholder?: string;
+  onChange?: (value: string, data: SelectDataType | undefined) => void;
 }
 
-export const Select: React.FC<SelectProps> = (
-  { data, onChange, value, disabled },
-  props
-) => {
-  const [dataSource, setDataSource] = useState<SelectDataType[]>([]);
+export const Select: React.FC<SelectProps> = ({
+  data,
+  customPlaceholder,
+  onChange,
+}) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>("");
+  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [filteredData, setFilteredData] = useState<SelectDataType[]>([]);
 
   useEffect(() => {
-    if (Array.isArray(data)) setDataSource(data);
-  }, [data]);
+    setFilteredData(
+      data.filter((item) =>
+        item.label.toLowerCase().includes(searchText.toLowerCase())
+      )
+    );
+  }, [searchText, data]);
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleOptionClick = (item: SelectDataType) => () => {
+    setSelectedValue(item.key.toString());
+    setIsOpen(false);
+    onChange && onChange(item.key.toString(), item);
+  };
+
+  const handleToggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
-    <SelectAnt
-      {...props}
-      disabled={disabled}
-      defaultValue={value}
-      onChange={onChange && onChange}
-      showSearch
-      filterOption={(input, option) => {
-        const optionLabel = (option?.children ?? "") as String;
-        return optionLabel.toLowerCase().includes(input.toLowerCase());
-      }}
-      optionFilterProp="children"
-      filterSort={(optionA, optionB) => {
-        const labelA = (optionA?.children ?? "") as String;
-        const labelB = (optionB?.children ?? "") as String;
-        return labelA.toLowerCase().localeCompare(labelB.toLowerCase());
-      }}
-    >
-      {dataSource.map((item: SelectDataType) => (
-        <Option key={item.key} value={item.key}>
-          {item.label}
-        </Option>
-      ))}
-    </SelectAnt>
+    <SSelect>
+      <SelectBox onClick={handleToggleDropdown}>
+        <SelectedValue>
+          {selectedValue
+            ? data.find((item) => item.key.toString() === selectedValue)?.label
+            : customPlaceholder}
+        </SelectedValue>
+        <Arrow $open={String(isOpen)} />
+      </SelectBox>
+      {isOpen && (
+        <DropdownMenu>
+          <SearchInput
+            type="text"
+            placeholder="Search..."
+            value={searchText}
+            onChange={handleSearchChange}
+          />
+          <Options>
+            {filteredData.map((item) => (
+              <Option key={item.key} onClick={handleOptionClick(item)}>
+                {item.label}
+              </Option>
+            ))}
+          </Options>
+        </DropdownMenu>
+      )}
+    </SSelect>
   );
 };
