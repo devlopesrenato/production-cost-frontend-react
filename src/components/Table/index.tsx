@@ -25,7 +25,7 @@ interface TableProps {
   loading?: boolean;
   title?: JSX.Element | string | number;
   footer?: JSX.Element | string | number;
-  maxHeight?: number
+  maxHeight?: number;
 }
 
 interface Ordination {
@@ -45,7 +45,7 @@ const Table: React.FC<TableProps> = ({
   loading = false,
   title,
   footer,
-  maxHeight
+  maxHeight,
 }) => {
   const [processedData, setProcessedData] = useState<any[]>([]);
   const [ordination, setOrdination] = useState<Ordination>({
@@ -146,10 +146,10 @@ const Table: React.FC<TableProps> = ({
     const fixedStart = isFirst
       ? -1
       : before?.fixed
-        ? Number(width) - 2
-        : undefined;
+      ? Number(width) - 2
+      : undefined;
     return {
-      width: '100%',
+      width: "100%",
       minWidth: width,
       position: colStyle.fixed ? "sticky" : undefined,
       right: colStyle.fixed === "right" ? fixedEnd : undefined,
@@ -177,7 +177,7 @@ const Table: React.FC<TableProps> = ({
                 const sort =
                   column.sort && !loading
                     ? () => handleOrdination(column.dataIndex)
-                    : () => { };
+                    : () => {};
                 return (
                   <STHeaderCell
                     $hover={column.sort ? "true" : "false"}
@@ -231,9 +231,10 @@ const Table: React.FC<TableProps> = ({
                 <STRow key={index}>
                   {columns.map((column, index) => {
                     const fnRender = column.render;
-                    const cellEditable = typeof column.editable === 'function'
-                      ? column.editable(data, data[column.dataIndex])
-                      : column.editable
+                    const cellEditable =
+                      typeof column.editable === "function"
+                        ? column.editable(data, data[column.dataIndex])
+                        : column.editable;
                     return (
                       <STCell
                         key={index}
@@ -249,7 +250,10 @@ const Table: React.FC<TableProps> = ({
                           editable={cellEditable}
                           type={column.type}
                           customRegex={column.cellValidateCustomRegex}
-                          onSave={(newValue) => column.savingEdit && column.savingEdit(data, newValue)}
+                          onSave={(newValue) =>
+                            column.savingEdit &&
+                            column.savingEdit(data, newValue)
+                          }
                         />
                       </STCell>
                     );
@@ -257,16 +261,16 @@ const Table: React.FC<TableProps> = ({
                 </STRow>
               ))
             ) : (
-              <tr>
+              <NoData>
                 {loading ? (
                   <></>
                 ) : (
-                  <NoData>
+                  <>
                     <RiArchive2Line />
                     No data
-                  </NoData>
+                  </>
                 )}
-              </tr>
+              </NoData>
             )}
           </STBody>
         </STable>

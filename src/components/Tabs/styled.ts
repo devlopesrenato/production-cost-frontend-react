@@ -54,7 +54,7 @@ const SButton = styled.button<{ $active?: string }>`
     background-color: ${({ theme, $active }) =>
         $active === "true"
             ? 'transparent'
-            : theme.colors.backgroundHeadTable
+            : theme.colors.backgroundHoverRowTable
     };
     &:hover {
         cursor: pointer;
