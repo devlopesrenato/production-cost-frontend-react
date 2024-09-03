@@ -4,18 +4,19 @@ const SSelect = styled.div`
   position: relative;
   width: 100%;
   font-size: 14px;
-  color: #000;  
+  color: #000;
 `;
 
-const SelectBox = styled.div`
+const SelectBox = styled.div<{ $disabled: string }>`
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 5.5px 11px;
-  cursor: pointer;
+  cursor: ${({ $disabled }) =>
+    $disabled == "true" ? "not-allowed" : "pointer"};
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #fff;
+  padding-right: 10px;
   &:hover,
   &:focus-within {
     border-color: #1677ff;
@@ -24,9 +25,6 @@ const SelectBox = styled.div`
   }
 `;
 
-const SelectedValue = styled.div`
-  flex: 1;
-`;
 const DropdownMenu = styled.div`
   position: absolute;
   top: 100%;
@@ -39,27 +37,17 @@ const DropdownMenu = styled.div`
   max-height: 250px;
 `;
 
-const SearchInput = styled.input`
-  box-sizing: border-box;
+const SearchInput = styled.input<{ $disabled: string }>`
+  outline: 0;
+  border: 0;
+  border-radius: 4px;
   background: #ffffff;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #d9d9d9;
-  border-radius: 6px;
   font-size: 14px;
   padding: 4px 11px;
-  line-height: 1.5;
   width: 100%;
   min-width: 0;
-  transition: all 0.2s;
-  margin-bottom: 5px;
-  outline: 0;
-  &:hover,
-  &:focus-within {
-    border-color: #1677ff;
-    box-shadow: 0 0 0 2px rgba(5, 145, 255, 0.1);
-    outline: 0;
-  }
+  cursor: ${({ $disabled }) =>
+    $disabled == "true" ? "not-allowed" : "pointer"};
 `;
 
 const Options = styled.div`
@@ -67,11 +55,14 @@ const Options = styled.div`
   overflow-y: auto;
 `;
 
-const Option = styled.div`
+const Option = styled.div<{ $selected: string }>`
   padding: 8px;
   cursor: pointer;
+  background-color: ${({ $selected }) =>
+    $selected == "true" ? "#1677ff" : ""};
   &:hover {
-    background-color: #f0f0f0;
+    background-color: ${({ $selected }) =>
+      $selected == "true" ? "#1677ff" : "#f0f0f0"};
     box-shadow: 0 0 0 2px rgba(5, 145, 255, 0.1);
   }
 `;
@@ -88,7 +79,6 @@ const Arrow = styled.div<{ $open: string }>`
 export {
   SSelect,
   SelectBox,
-  SelectedValue,
   DropdownMenu,
   SearchInput,
   Arrow,

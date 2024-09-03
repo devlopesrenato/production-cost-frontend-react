@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, useRef } from "react";
 import {
   Arrow,
   DropdownMenu,
@@ -6,74 +6,133 @@ import {
   Options,
   SearchInput,
   SelectBox,
-  SelectedValue,
   SSelect,
 } from "./styled";
+import { Loading } from "../Loading";
 
 type SelectDataType = {
   key: string | number;
   label: string;
 };
 
-interface SelectProps {
+interface SelectProps extends React.InputHTMLAttributes<HTMLInputElement> {
   data: SelectDataType[];
-  customPlaceholder?: string;
-  onChange?: (value: string, data: SelectDataType | undefined) => void;
+  onChange?: any;
+  disabled?: boolean;
+  value?: any;
+  loading?: boolean;
 }
 
 export const Select: React.FC<SelectProps> = ({
   data,
-  customPlaceholder,
   onChange,
+  disabled,
+  value,
+  loading,
+  ...rest
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [searchText, setSearchText] = useState<string>("");
-  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [text, setText] = useState<string | undefined>(value);
+  const [selectedValue, setSelectedValue] = useState<string | undefined>(
+    undefined
+  );
   const [filteredData, setFilteredData] = useState<SelectDataType[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!text) {
+      setSelectedValue(undefined);
+      onChange && onChange();
+    }
     setFilteredData(
-      data.filter((item) =>
-        item.label.toLowerCase().includes(searchText.toLowerCase())
-      )
+      selectedValue || !text
+        ? data
+        : data.filter((item) =>
+            item.label.toLowerCase().includes(text.toLowerCase())
+          )
     );
-  }, [searchText, data]);
+  }, [text, data]);
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
+  useEffect(() => {
+    const item = data.find(
+      ({ label, key }) =>
+        label.toLowerCase().includes(value) ||
+        String(key).toLowerCase().includes(value)
+    );
+    if (item) {
+      setText(item.label);
+      setSelectedValue(item.key.toString());
+      onChange && onChange(item.key.toString(), item);
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (isOpen) {
+      inputRef.current?.focus();
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      console.log({ selectedValue });
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isOpen]);
+
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (
+      !divRef.current?.contains(event.target as Node) &&
+      !inputRef.current?.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
   };
 
-  const handleOptionClick = (item: SelectDataType) => () => {
-    setSelectedValue(item.key.toString());
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
+    setSelectedValue(undefined);
+    onChange && onChange();
+  };
+
+  const handleOptionClick = (itemSelected: SelectDataType) => () => {
+    setSelectedValue(itemSelected.key.toString());
+    const labelItemSelected = data.find(
+      ({ key }) => key.toString() === itemSelected.key.toString()
+    )?.label;
+    setText(labelItemSelected);
     setIsOpen(false);
-    onChange && onChange(item.key.toString(), item);
+    onChange && onChange(itemSelected.key.toString(), itemSelected);
   };
 
   const handleToggleDropdown = () => {
-    setIsOpen(!isOpen);
+    if (!loading) {
+      setIsOpen(!isOpen);
+    }
   };
 
   return (
-    <SSelect>
-      <SelectBox onClick={handleToggleDropdown}>
-        <SelectedValue>
-          {selectedValue
-            ? data.find((item) => item.key.toString() === selectedValue)?.label
-            : customPlaceholder}
-        </SelectedValue>
-        <Arrow $open={String(isOpen)} />
+    <SSelect ref={divRef}>
+      <SelectBox $disabled={String(loading)} onClick={handleToggleDropdown}>
+        <SearchInput
+          ref={inputRef}
+          $disabled={String(loading)}
+          type="search"
+          onChange={handleSearchChange}
+          value={text}
+          {...rest}
+        />
+        {loading ? <Loading size={20} /> : <Arrow $open={String(isOpen)} />}
       </SelectBox>
       {isOpen && (
         <DropdownMenu>
-          <SearchInput
-            type="text"
-            placeholder="Search..."
-            value={searchText}
-            onChange={handleSearchChange}
-          />
           <Options>
             {filteredData.map((item) => (
-              <Option key={item.key} onClick={handleOptionClick(item)}>
+              <Option
+                key={item.key}
+                onClick={handleOptionClick(item)}
+                $selected={String(item.key == selectedValue)}
+              >
                 {item.label}
               </Option>
             ))}

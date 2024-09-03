@@ -4,6 +4,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 
 interface LoadingProps {
   backColor?: string;
+  color?: string;
   children?: React.ReactNode;
   loading?: boolean;
   size?: number;
@@ -11,6 +12,7 @@ interface LoadingProps {
 
 export const Loading: React.FC<LoadingProps> = ({
   backColor,
+  color,
   children,
   loading = true,
   size = 35,
@@ -18,9 +20,9 @@ export const Loading: React.FC<LoadingProps> = ({
   return (
     <SLoading style={{ backgroundColor: backColor }}>
       {loading ? (
-        <div>
+        <div style={{ width: size }}>
           <SLoadingSpinner $size={size}>
-            <AiOutlineLoading id="svg-loading" />
+            <AiOutlineLoading id="svg-loading" fill={color} />
           </SLoadingSpinner>
         </div>
       ) : (
